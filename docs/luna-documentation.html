@@ -6449,12 +6449,25 @@ body.full-page-mode .dv-bg-empty {
     // App-switcher menu definition. Order = display order.
     // href is relative to the repo root; `docs-root` meta tag on each page
     // provides the prefix (`.` from root pages, `..` from docs/ pages).
+    // `localOnly: true` items are hidden when the page is served from
+    // a remote host (e.g. github.io) — used for items that read from
+    // gitignored local files like docs/publish-log.js.
     var TOOLS = [
         { key: 'readme',    label: 'Read Me',   desc: 'How to use the prototyping toolkit',  href: '🚀read-me.html',           icon: ICONS.guide },
         { key: 'luna',      label: 'Luna',      desc: 'Component reference & design tokens', href: 'docs/luna-documentation.html', icon: ICONS.luna },
         { key: 'changelog', label: 'Changelog', desc: "What's new across the toolkit",       href: 'docs/changelog.html',          icon: ICONS.changelog },
-        { key: 'published', label: 'Published Prototypes', desc: 'Your personal log of shared prototypes', href: 'docs/published-prototypes.html', icon: ICONS.share }
+        { key: 'published', label: 'Published Prototypes', desc: 'Your personal log of shared prototypes', href: 'docs/published-prototypes.html', icon: ICONS.share, localOnly: true }
     ];
+
+    // True when the page is being viewed locally (file://, localhost, or 127.0.0.1).
+    // Filters out localOnly tools when running from a remote host like github.io.
+    function isLocalView() {
+        var host = (window.location.hostname || '').toLowerCase();
+        return window.location.protocol === 'file:' ||
+               host === 'localhost' ||
+               host === '127.0.0.1' ||
+               host === '';
+    }
 
     function getMeta(name) {
         var el = document.querySelector('meta[name="' + name + '"]');
@@ -6469,7 +6482,11 @@ body.full-page-mode .dv-bg-empty {
 
     function buildMenu(current, root) {
         var html = '<div class="docs-chrome-menu-label">Optro Tools</div>';
+        var local = isLocalView();
         TOOLS.forEach(function (tool) {
+            // Skip localOnly tools (e.g. published-prototypes which reads gitignored publish-log.js)
+            // when the page is served from a remote host like github.io.
+            if (tool.localOnly && !local) return;
             var isCurrent = tool.key === current;
             var href = isCurrent ? '#' : joinPath(root, tool.href);
             var aria = isCurrent ? ' aria-current="page"' : '';
