@@ -6052,7 +6052,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
         <div class="sidebar-section">
             <div class="sidebar-section-title">THIRD PARTY RISK</div>
             <a href="vendors.html" class="sidebar-item active">Third Parties</a>
-            <a href="inbox.html" class="sidebar-item">Inbox <span class="sidebar-count">14</span></a>
+            <a href="inbox.html" class="sidebar-item">Inbox <span class="sidebar-count">13</span></a>
             <a href="issues.html" class="sidebar-item">Issues</a>
             <a href="contracts.html" class="sidebar-item">Contracts</a>
         </div>
@@ -6083,7 +6083,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
 
         <div class="luna-tablist page-tablist" data-component="Tablist" data-size="sm">
             <button class="luna-tab active" data-tab="requested" onclick="switchTab('requested')">
-                Requested <span class="tab-count alert">9</span>
+                Requested <span class="tab-count alert">10</span>
             </button>
             <button class="luna-tab" data-tab="managed" onclick="switchTab('managed')">
                 Managed Third Parties <span class="tab-count">200</span>
@@ -6134,6 +6134,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr><td class="checkbox-cell"><input type="checkbox"></td><td><a href="vendor-detail-intake?name=Acme%20Corp" class="cell-link">Acme Corp</a></td><td>Vendor</td><td><span class="luna-badge purple weak" data-component="Badge">Zip</span></td><td>Jorge Rivera</td><td>SaaS</td><td>$48,000</td><td class="cell-date">Apr 28, 2026</td><td><span class="row-action-link accept" onclick="engageVendor(this, 'Acme Corp')">Engage</span> <span class="row-action-link reject" onclick="declineVendor(this, 'Acme Corp')">Decline</span></td></tr>
                                 <tr><td class="checkbox-cell"><input type="checkbox"></td><td><span class="cell-link">DataStream Inc.</span></td><td>Vendor</td><td><span class="luna-badge purple weak" data-component="Badge">Zip</span></td><td>Mia Park</td><td>Data</td><td>$120,000</td><td class="cell-date">Apr 27, 2026</td><td><span class="row-action-link accept" onclick="engageVendor(this, 'DataStream Inc.')">Engage</span> <span class="row-action-link reject" onclick="declineVendor(this, 'DataStream Inc.')">Decline</span></td></tr>
                                 <tr><td class="checkbox-cell"><input type="checkbox"></td><td><span class="cell-link">Pendo.io</span></td><td>Product</td><td><span class="luna-badge orange weak" data-component="Badge">CrossComply</span></td><td>Sophie Chen</td><td>Analytics</td><td>$22,000</td><td class="cell-date">Apr 25, 2026</td><td><span class="row-action-link accept" onclick="engageVendor(this, 'Pendo.io')">Engage</span> <span class="row-action-link reject" onclick="declineVendor(this, 'Pendo.io')">Decline</span></td></tr>
                                 <tr><td class="checkbox-cell"><input type="checkbox"></td><td><span class="cell-link">LegalSoft LLC</span></td><td>Vendor</td><td><span class="luna-badge blue weak" data-component="Badge">Jira</span></td><td>Rachel Kim</td><td>Legal Tech</td><td>$35,000</td><td class="cell-date">Apr 24, 2026</td><td><span class="row-action-link accept" onclick="engageVendor(this, 'Pendo.io')">Engage</span> <span class="row-action-link reject" onclick="declineVendor(this, 'Pendo.io')">Decline</span></td></tr>
@@ -6156,7 +6157,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                         </select>
                     </div>
                     <div class="hplv-pagination-nav">
-                        <span class="hplv-pagination-range">1-9 of 9</span>
+                        <span class="hplv-pagination-range">1-10 of 10</span>
                         <button class="luna-btn" data-component="Button" data-size="xs" disabled><span class="luna-icon" data-icon="chevron-left"></span></button>
                         <button class="luna-btn" data-component="Button" data-size="xs" disabled><span class="luna-icon" data-icon="chevron-right"></span></button>
                     </div>
@@ -6215,7 +6216,6 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td class="checkbox-cell"><input type="checkbox"></td><td><a href="vendor-detail?name=Acme%20Corp" class="cell-link">Acme Corp</a></td><td>Vendor</td><td><span class="luna-badge green strong" data-component="Badge">Approved</span></td><td><span class="luna-badge orange weak" data-component="Badge">Tier 2</span></td><td><span class="score-pill low">28</span></td><td class="cell-date">May 9, 2026</td><td>Sarah Chen</td><td class="row-actions-cell"><button class="row-actions-btn" title="Actions"><span class="luna-icon" data-icon="more-vertical"></span></button></td></tr>
                                 <tr><td class="checkbox-cell"><input type="checkbox"></td><td><a href="vendor-detail?name=Salesforce%20Inc." class="cell-link">Salesforce Inc.</a></td><td>Vendor</td><td><span class="luna-badge green strong" data-component="Badge">Approved</span></td><td><span class="luna-badge red strong" data-component="Badge">Tier 1</span></td><td><span class="score-pill high">72</span></td><td class="cell-date">Mar 15, 2026</td><td>Sarah Chen</td><td class="row-actions-cell"><button class="row-actions-btn" title="Actions"><span class="luna-icon" data-icon="more-vertical"></span></button></td></tr>
                                 <tr><td class="checkbox-cell"><input type="checkbox"></td><td><a href="vendor-detail.html" class="cell-link">AWS (Amazon Web Services)</a></td><td>Vendor</td><td><span class="luna-badge green strong" data-component="Badge">Approved</span></td><td><span class="luna-badge red strong" data-component="Badge">Tier 1</span></td><td><span class="score-pill medium">45</span></td><td class="cell-date">Feb 28, 2026</td><td>James Park</td><td class="row-actions-cell"><button class="row-actions-btn" title="Actions"><span class="luna-icon" data-icon="more-vertical"></span></button></td></tr>
                                 <tr><td class="checkbox-cell"><input type="checkbox"></td><td><a href="vendor-detail.html" class="cell-link">Workday</a></td><td>Vendor</td><td><span class="luna-badge blue normal" data-component="Badge">In Review</span></td><td><span class="luna-badge orange weak" data-component="Badge">Tier 2</span></td><td><span class="score-pill medium">38</span></td><td class="cell-date">Apr 1, 2026</td><td>Maria Santos</td><td class="row-actions-cell"><button class="row-actions-btn" title="Actions"><span class="luna-icon" data-icon="more-vertical"></span></button></td></tr>

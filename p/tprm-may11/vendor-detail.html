@@ -6328,7 +6328,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
         <div class="sidebar-section">
             <div class="sidebar-section-title">THIRD PARTY RISK</div>
             <a href="vendors.html" class="sidebar-item active">Third Parties</a>
-            <a href="inbox.html" class="sidebar-item">Inbox <span class="sidebar-count">14</span></a>
+            <a href="inbox.html" class="sidebar-item">Inbox <span class="sidebar-count">13</span></a>
             <a href="issues.html" class="sidebar-item">Issues</a>
             <a href="contracts.html" class="sidebar-item">Contracts</a>
         </div>
@@ -6813,33 +6813,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
        any third party's detail view. Used by vendors.html when a row is
        declined or engaged so the link carries name/status/reason/notes. */
     /* Per-vendor demo data overrides. Lets one page render multiple vendors coherently. */
-    const VENDOR_OVERRIDES = {
-        'Acme Corp': {
-            attnTitle: 'SOC 2 Type II expires in 22 days',
-            attnDesc: 'Last uploaded May 4, 2025 via Magic link · expires Jun 2, 2026. AI drafted refresh request.',
-            vd: {
-                'Vendor name': 'Acme Corp',
-                'UID': 'AC-00873',
-                'Category': 'SaaS',
-                'Annual spend': '$48,000',
-                'Data classification': 'Internal',
-                'Contract term': 'May 2026 – Apr 2027',
-                'Website': 'acmecorp.com',
-                'HQ': 'Austin, TX',
-                'Region': 'North America',
-                'Subprocessor': 'No',
-                'PII processed': 'No'
-            },
-            stakeholders: { 'Business owner': 'Jorge Rivera', 'TPRM owner': 'Sarah Chen', 'Vendor contact': 'M. Lyle' },
-            keyDates: {
-                'Onboarded': 'May 4, 2026',
-                'Last assessed': 'May 9, 2026',
-                'Next reassessment': 'May 4, 2027',
-                'SOC 2 expires': { value: 'Jun 2, 2026', warn: true }
-            },
-            docExpiring: ['SOC 2 Type II']
-        }
-    };
+    const VENDOR_OVERRIDES = {};
 
     (function applyUrlParams() {
         const params = new URLSearchParams(window.location.search);

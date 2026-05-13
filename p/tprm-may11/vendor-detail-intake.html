@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataStream Inc. — Intake — TPRM</title>
+    <title>Acme Corp — Intake — TPRM</title>
 
     <style>/* layout.css (inlined) */
 /* Shared Layout Styles for Optro Prototypes */
@@ -5936,20 +5936,20 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
 
         /* AI Tier Classification card — full-width with gradient header */
         .ai-tier-card {
-            border: 1px solid #c7d2fe;
-            border-radius: 0.625rem;
             background: #ffffff;
-            margin-bottom: 1.75rem;
-            /* overflow: visible so the Override dropdown can extend beyond the card */
-            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
         }
         .ai-tier-header {
-            background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
-            color: #ffffff;
-            padding: 0.75rem 1.25rem;
+            color: #475569;
+            padding: 0 0 0.625rem 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-bottom: 1px solid #f1f5f9;
+            margin-bottom: 0.75rem;
             font-size: 0.875rem;
             font-weight: 600;
             border-top-left-radius: 0.5rem;
@@ -5960,14 +5960,24 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
             display: inline-flex;
             align-items: center;
             gap: 0.25rem;
-            padding: 0.1875rem 0.625rem;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.18);
-            font-size: 0.75rem;
-            font-weight: 600;
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.25rem;
+            background: #ede9fe;
+            color: #6d28d9;
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .ai-tier-header > span:not(.ai-suggestion-pill) {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
         .ai-tier-body {
-            padding: 1.5rem 1.5rem 1.25rem 1.5rem;
+            padding: 0;
         }
         .ai-tier-value {
             font-size: 2.25rem;
@@ -6024,12 +6034,15 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1rem;
+            margin-bottom: 0.625rem;
+            margin-top: 1rem;
         }
         .section-header h2 {
-            font-size: 1.0625rem;
-            font-weight: 600;
-            color: #0f172a;
+            font-size: 0.6875rem;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
             margin: 0;
         }
         /* Customize link: tighten icon gap inside Luna link */
@@ -6121,9 +6134,11 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
         /* AI tier card — confirmed state */
         .ai-tier-card.confirmed {
             border-color: #6ee7b7;
+            background: #f0fdf4;
         }
-        .ai-tier-card.confirmed .ai-tier-header {
-            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+        .ai-tier-card.confirmed .ai-suggestion-pill {
+            background: #d1fae5;
+            color: #065f46;
         }
         .ai-tier-confirmed-row {
             display: none;
@@ -6164,13 +6179,15 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
         [data-intake-state="in-review"] .tier-confirmed-banner .tier-banner-change { display: none; }
         [data-intake-state="in-review"] .docs-locked-note { display: none; }
 
-        /* ─── Start Review CTA in the page header ─── */
-        .intake-header-cta {
+        /* ─── State-aware CTAs in the page header (Luna pattern) ─── */
+        .intake-header-cta,
+        .in-review-header-cta {
             display: none;
             align-items: center;
             gap: 0.5rem;
         }
         [data-intake-state="accepted"] .intake-header-cta { display: inline-flex; }
+        [data-intake-state="in-review"] .in-review-header-cta { display: inline-flex; }
 
         /* The header tier badge becomes clickable in in-review state */
         [data-intake-state="in-review"] #headerTierBadge {
@@ -7462,7 +7479,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
         <div class="sidebar-section">
             <div class="sidebar-section-title">THIRD PARTY RISK</div>
             <a href="vendors.html" class="sidebar-item active">Third Parties</a>
-            <a href="inbox.html" class="sidebar-item">Inbox <span class="sidebar-count">14</span></a>
+            <a href="inbox.html" class="sidebar-item">Inbox <span class="sidebar-count">13</span></a>
             <a href="issues.html" class="sidebar-item">Issues</a>
             <a href="contracts.html" class="sidebar-item">Contracts</a>
         </div>
@@ -7485,15 +7502,18 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
         <!-- Title row + top-right doc counter + Start Review CTA -->
         <div class="intake-page-header">
             <div class="intake-title-row">
-                <h1 class="intake-title">DataStream Inc.</h1>
+                <h1 class="intake-title">Acme Corp</h1>
                 <span class="luna-badge purple weak" data-component="Badge" id="headerStageBadge">Intake</span>
                 <span class="luna-badge orange weak" id="headerTierBadge" data-component="Badge"
                     data-tooltip="Click to expand tier details" onclick="onHeaderTierClick()">Tier 2</span>
                 <span class="source-pill"><span class="luna-icon" data-icon="bolt" data-size="xs"></span>Zip</span>
             </div>
-            <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <button class="luna-btn primary intake-header-cta" data-component="Button" id="startReviewBtn" onclick="startReview()">
                     Start Assessment <span class="luna-icon" data-icon="arrow-right" data-size="xs"></span>
+                </button>
+                <button class="luna-btn primary in-review-header-cta" data-component="Button" id="headerSendGapsBtn" onclick="openSendGapsDrawer('all')">
+                    Send 36 gaps to vendor
                 </button>
             </div>
         </div>
@@ -7502,7 +7522,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
         <div class="intake-breadcrumb">
             <a href="vendors.html">Third Parties</a>
             <span class="intake-breadcrumb-sep">›</span>
-            <span>DataStream Inc.</span>
+            <span>Acme Corp</span>
         </div>
 
         <!-- Stepper · linear onboarding journey only.
@@ -7543,7 +7563,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                             <div class="ov-attn-icon" style="background: #6d28d9; font-size: 11px;">AI</div>
                             <div class="ov-attn-body">
                                 <div class="ov-attn-title">Review AI-suggested tier classification</div>
-                                <div class="ov-attn-desc">DataStream Inc. is suggested as <b>Tier 1</b> with 92% confidence based on 4 policy signals.</div>
+                                <div class="ov-attn-desc">Acme Corp is suggested as <b>Tier 2</b> with 87% confidence based on 4 policy signals.</div>
                             </div>
                             <a class="ov-attn-cta" onclick="switchTab('intake')">Review tier →</a>
                         </div>
@@ -7576,15 +7596,15 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                         </div>
                         <div class="vd-smart-banner"><span class="luna-icon" data-icon="sparkles" data-size="xs"></span> Smart Form · 8 of 12 fields completed · 4 fields conditionally hidden until classification is set</div>
                         <div class="vd-grid">
-                            <div class="vd-field"><div class="vd-label">Vendor name</div><div class="vd-value">DataStream Inc.</div></div>
-                            <div class="vd-field"><div class="vd-label">Source</div><div class="vd-value">Zip · May 5</div></div>
-                            <div class="vd-field"><div class="vd-label">Category</div><div class="vd-value">Data Platform</div></div>
-                            <div class="vd-field"><div class="vd-label">Est. spend</div><div class="vd-value">$120,000/yr</div></div>
-                            <div class="vd-field"><div class="vd-label">Business owner</div><div class="vd-value">Mia Park</div></div>
+                            <div class="vd-field"><div class="vd-label">Vendor name</div><div class="vd-value">Acme Corp</div></div>
+                            <div class="vd-field"><div class="vd-label">Source</div><div class="vd-value">Zip · Apr 28</div></div>
+                            <div class="vd-field"><div class="vd-label">Category</div><div class="vd-value">SaaS</div></div>
+                            <div class="vd-field"><div class="vd-label">Est. spend</div><div class="vd-value">$48,000/yr</div></div>
+                            <div class="vd-field"><div class="vd-label">Business owner</div><div class="vd-value">Jorge Rivera</div></div>
                             <div class="vd-field"><div class="vd-label">Data classification *</div><div class="vd-value empty">Select classification</div></div>
                             <div class="vd-field"><div class="vd-label">TPRM owner</div><div class="vd-value">Sarah Chen</div></div>
-                            <div class="vd-field"><div class="vd-label">Vendor contact</div><div class="vd-value empty">Add contact</div></div>
-                            <div class="vd-field"><div class="vd-label">Region <span class="vd-custom-badge">custom</span></div><div class="vd-value">EMEA</div></div>
+                            <div class="vd-field"><div class="vd-label">Vendor contact</div><div class="vd-value">security@acmecorp.com</div></div>
+                            <div class="vd-field"><div class="vd-label">Region <span class="vd-custom-badge">custom</span></div><div class="vd-value">North America</div></div>
                         </div>
                     </div>
 
@@ -7598,11 +7618,11 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                         <div class="ov-timeline">
                             <div class="ov-tl-item ai">
                                 <div class="ov-tl-date">Today · 9:14 AM</div>
-                                <div class="ov-tl-text">AI suggested <b>Tier 1</b> classification at 92% confidence <span class="ov-tl-by">· awaiting your acceptance</span></div>
+                                <div class="ov-tl-text">AI suggested <b>Tier 2</b> classification at 87% confidence <span class="ov-tl-by">· awaiting your acceptance</span></div>
                             </div>
                             <div class="ov-tl-item vendor">
                                 <div class="ov-tl-date">Today · 9:14 AM</div>
-                                <div class="ov-tl-text">Vendor imported from <b>Zip</b> (request #ZP-4422) <span class="ov-tl-by">· requester Mia Park</span></div>
+                                <div class="ov-tl-text">Vendor imported from <b>Zip</b> (request #ZP-4422) <span class="ov-tl-by">· requester Jorge Rivera</span></div>
                             </div>
                         </div>
                     </div>
@@ -7615,8 +7635,8 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                         <div class="ov-block-head"><h5>Health</h5></div>
                         <div class="health-grid">
                             <div class="health-cell"><div class="health-lbl">Risk</div><div class="health-val pending">—</div><div class="health-sub">Pending tier</div></div>
-                            <div class="health-cell"><div class="health-lbl">Tier</div><div class="health-val high">T1</div><div class="health-sub">AI 92% · unconfirmed</div></div>
-                            <div class="health-cell"><div class="health-lbl">BitSight</div><div class="health-val">710</div><div class="health-sub">Intermediate</div></div>
+                            <div class="health-cell"><div class="health-lbl">Tier</div><div class="health-val med">T2</div><div class="health-sub">AI 87% · unconfirmed</div></div>
+                            <div class="health-cell"><div class="health-lbl">BitSight</div><div class="health-val">690</div><div class="health-sub">Intermediate</div></div>
                             <div class="health-cell"><div class="health-lbl">Maturity</div><div class="health-val pending">—</div><div class="health-sub">Pending</div></div>
                         </div>
                     </div>
@@ -7635,7 +7655,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                             <h5>Stakeholders</h5>
                             <div class="ov-block-actions"><a class="ov-block-action">Manage</a></div>
                         </div>
-                        <div class="sh-row"><span class="sh-lbl">Business owner</span><span class="sh-val">Mia Park</span></div>
+                        <div class="sh-row"><span class="sh-lbl">Business owner</span><span class="sh-val">Jorge Rivera</span></div>
                         <div class="sh-row"><span class="sh-lbl">TPRM owner</span><span class="sh-val">Sarah Chen</span></div>
                         <div class="sh-row"><span class="sh-lbl">Vendor contact</span><span class="sh-val empty-val">— Add</span></div>
                     </div>
@@ -7651,7 +7671,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                 <div class="ai-tier-header">
                     <div class="ai-tier-header-left">
                         <span class="luna-icon" data-icon="sparkles" data-size="sm"></span>
-                        <span id="aiTierCardTitle">AI Tier Classification — DataStream Inc.</span>
+                        <span id="aiTierCardTitle">AI Tier Classification — Acme Corp</span>
                     </div>
                     <span class="ai-suggestion-pill" id="aiTierCardPill">
                         <span class="luna-icon" data-icon="sparkles" data-size="xs"></span> AI Suggestion
@@ -7756,7 +7776,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
             <div class="vendor-grid">
                 <div class="luna-field" data-component="Field">
                     <label class="luna-field-label">Vendor</label>
-                    <input class="luna-input" value="DataStream Inc." readonly data-component="Input">
+                    <input class="luna-input" value="Acme Corp" readonly data-component="Input">
                     <span class="vendor-from"><span class="luna-icon" data-icon="bolt" data-size="xs"></span> From Zip</span>
                 </div>
                 <div class="luna-field" data-component="Field">
@@ -7777,7 +7797,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
 
                 <div class="luna-field" data-component="Field">
                     <label class="luna-field-label">Business Owner <span class="scope">internal</span></label>
-                    <input class="luna-input" value="Mia Park" readonly data-component="Input">
+                    <input class="luna-input" value="Jorge Rivera" readonly data-component="Input">
                     <span class="vendor-from"><span class="luna-icon" data-icon="bolt" data-size="xs"></span> From Zip</span>
                 </div>
                 <div class="luna-field" data-component="Field">
@@ -7804,7 +7824,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                     <label class="luna-field-label">Vendor Contact <span class="scope">external</span></label>
                     <div class="vendor-stack">
                         <input class="luna-input" placeholder="Name" data-component="Input">
-                        <input class="luna-input" placeholder="security@datastream.com" data-component="Input">
+                        <input class="luna-input" placeholder="security@acmecorp.com" data-component="Input">
                     </div>
                 </div>
             </div>
@@ -7846,7 +7866,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                         <div class="luna-menu-item req-menu-item" data-component="Option" onclick="document.getElementById('reqMenu').classList.remove('open'); window.open('trust-center-acme.html', '_blank');">
                             <span class="req-menu-icon"><span class="luna-icon" data-icon="lock" data-component="Icon"></span></span>
                             <div class="req-menu-text">
-                                <div class="req-menu-title">Navigate to DataStream's trust center</div>
+                                <div class="req-menu-title">Navigate to Acme's trust center</div>
                                 <div class="req-menu-sub">Request access to gated documents</div>
                             </div>
                         </div>
@@ -7879,7 +7899,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                     <div class="luna-empty-state-heading">Confirm tier to see assessment plan</div>
                     <div class="luna-empty-state-description">
                         The questionnaires that need to be filled out are determined by the vendor's tier.
-                        Confirm DataStream Inc.'s tier on the Intake tab to see what's coming.
+                        Confirm Acme Corp's tier on the Intake tab to see what's coming.
                     </div>
                     <div class="luna-empty-state-primary-actions">
                         <button class="luna-btn primary" data-component="Button" onclick="switchTab('intake')">Go to Intake</button>
@@ -8141,7 +8161,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                     <div class="q-section-heading">Optro-specific risk</div>
                     <div class="q-item">
                         <div class="q-item-header"><span class="q-num">OPT-01</span><span class="q-text">Does the vendor process Optro customer audit data?</span></div>
-                        <div class="q-answer">No — DataStream processes only metadata; raw audit logs stay in Optro infrastructure.</div>
+                        <div class="q-answer">No — Acme processes only metadata; raw audit logs stay in Optro infrastructure.</div>
                         <div class="q-meta"><span class="luna-icon" data-icon="sparkles" data-size="xs"></span> AI · 97% · from <em>Data Processing Addendum.pdf</em></div>
                         <div class="q-actions">
                             <button class="luna-btn">Approve</button>
@@ -8228,7 +8248,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
             </div>
             <div class="luna-modal-body">
                 <p style="margin: 0; color: #475569; font-size: 0.875rem; line-height: 1.5;" id="startReviewModalCopy">
-                    Move <strong>DataStream Inc.</strong> to the In Review stage. AI will start drafting questionnaire answers from the collected documents and surface gaps for human review.
+                    Move <strong>Acme Corp</strong> to the In Review stage. AI will start drafting questionnaire answers from the collected documents and surface gaps for human review.
                 </p>
                 <div class="start-review-modal-stat" id="startReviewMissingNote" style="display:none;">
                     <span class="luna-icon" data-icon="exclamation-triangle" data-size="sm"></span>
@@ -8256,7 +8276,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                     <div class="send-drawer-title" id="sendDrawerTitle">Send secure upload link</div>
                     <div class="send-drawer-sub">
                         <span class="send-drawer-ai-pill"><span class="luna-icon" data-icon="sparkles" data-size="xs"></span> AI-prepared</span>
-                        2 missing documents · DataStream Inc.
+                        2 missing documents · Acme Corp
                     </div>
                 </div>
             </div>
@@ -8269,7 +8289,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
 
             <div class="luna-field" data-component="Field">
                 <label class="luna-field-label">To</label>
-                <input class="luna-input" data-component="Input" id="sendDrawerTo" value="security@datastream.com">
+                <input class="luna-input" data-component="Input" id="sendDrawerTo" value="security@acmecorp.com">
             </div>
 
             <div class="luna-field" data-component="Field">
@@ -8282,7 +8302,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
 
             <div class="luna-field" data-component="Field">
                 <label class="luna-field-label">Subject</label>
-                <input class="luna-input" data-component="Input" id="sendDrawerSubject" value="Document request — DataStream Inc. security review">
+                <input class="luna-input" data-component="Input" id="sendDrawerSubject" value="Document request — Acme Corp security review">
             </div>
 
             <!-- Message: preview-with-edit toggle -->
@@ -8294,7 +8314,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                     </button>
                 </div>
                 <div class="send-drawer-msg-preview" id="sendDrawerMsgPreview">
-                    <p>Hi DataStream team,</p>
+                    <p>Hi Acme team,</p>
                     <p>We&rsquo;re getting your security review started and need two more documents to complete it:</p>
                     <ul>
                         <li>Penetration Test Summary</li>
@@ -8304,7 +8324,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                     <p>Thanks,<br>Sarah</p>
                     <div class="send-drawer-msg-aitag"><span class="luna-icon" data-icon="sparkles" data-size="xs"></span> AI draft · click <em>Edit message</em> to change</div>
                 </div>
-                <textarea class="luna-textarea send-drawer-msg-edit" data-component="Textarea" id="sendDrawerMsgEdit">Hi DataStream team,
+                <textarea class="luna-textarea send-drawer-msg-edit" data-component="Textarea" id="sendDrawerMsgEdit">Hi Acme team,
 
 We&rsquo;re getting your security review started and need two more documents to complete it:
 
@@ -8353,10 +8373,10 @@ Sarah</textarea>
             <div class="send-drawer-title-wrap">
                 <span class="send-drawer-title-icon"><span class="luna-icon" data-icon="link" data-size="sm"></span></span>
                 <div>
-                    <div class="send-drawer-title" id="sendGapsTitle">Send gaps to DataStream</div>
+                    <div class="send-drawer-title" id="sendGapsTitle">Send gaps to Acme</div>
                     <div class="send-drawer-sub">
                         <span class="send-drawer-ai-pill"><span class="luna-icon" data-icon="sparkles" data-size="xs"></span> AI-prepared</span>
-                        <span id="sendGapsScopeLabel">36 questions</span> · DataStream Inc.
+                        <span id="sendGapsScopeLabel">36 questions</span> · Acme Corp
                     </div>
                 </div>
             </div>
@@ -8369,7 +8389,7 @@ Sarah</textarea>
 
             <div class="luna-field" data-component="Field">
                 <label class="luna-field-label">To</label>
-                <input class="luna-input" data-component="Input" id="sendGapsTo" value="security@datastream.com">
+                <input class="luna-input" data-component="Input" id="sendGapsTo" value="security@acmecorp.com">
             </div>
 
             <div class="luna-field" data-component="Field">
@@ -8382,7 +8402,7 @@ Sarah</textarea>
                     <span class="luna-field-label">Intro message</span>
                     <span class="send-drawer-msg-aitag" style="margin:0;"><span class="luna-icon" data-icon="sparkles" data-size="xs"></span> AI draft · editable</span>
                 </div>
-                <textarea class="luna-textarea" data-component="Textarea" id="sendGapsIntro" rows="3">Hi DataStream team — we drafted answers for most of our security review from the docs you shared. A handful of questions still need your input. The link below opens a focused page (~10 min, expires in 14 days). Answers come straight back to us — no login required.</textarea>
+                <textarea class="luna-textarea" data-component="Textarea" id="sendGapsIntro" rows="3">Hi Acme team — we drafted answers for most of our security review from the docs you shared. A handful of questions still need your input. The link below opens a focused page (~10 min, expires in 14 days). Answers come straight back to us — no login required.</textarea>
             </div>
 
             <!-- Gap selector -->
@@ -8471,15 +8491,15 @@ Sarah</textarea>
 
         if (tierSource === 'override') {
             meta.textContent = 'Manually overridden — confidence: high';
-            cardTitle.textContent = 'Manual Tier Override — DataStream Inc.';
+            cardTitle.textContent = 'Manual Tier Override — Acme Corp';
             cardPill.innerHTML = '<span class="luna-icon" data-icon="person" data-size="xs"></span> Manual';
         } else if (tierSource === 'data-class') {
             meta.textContent = '94% confidence · Re-evaluated from Data Classification';
-            cardTitle.textContent = 'AI Tier Classification — DataStream Inc.';
+            cardTitle.textContent = 'AI Tier Classification — Acme Corp';
             cardPill.innerHTML = '<span class="luna-icon" data-icon="sparkles" data-size="xs"></span> AI Suggestion';
         } else {
             meta.textContent = '87% confidence · Based on 4 policy signals';
-            cardTitle.textContent = 'AI Tier Classification — DataStream Inc.';
+            cardTitle.textContent = 'AI Tier Classification — Acme Corp';
             cardPill.innerHTML = '<span class="luna-icon" data-icon="sparkles" data-size="xs"></span> AI Suggestion';
         }
 
@@ -8683,7 +8703,7 @@ Sarah</textarea>
                 <div class="ov-action-item">
                     <span class="ov-action-item-text">
                         <span class="ov-ai-tag"><span class="luna-icon" data-icon="sparkles" data-size="xs"></span> AI</span>
-                        <strong>Review the AI-suggested tier classification.</strong> DataStream Inc. is suggested as Tier 2 with 87% confidence based on 4 policy signals.
+                        <strong>Review the AI-suggested tier classification.</strong> Acme Corp is suggested as Tier 2 with 87% confidence based on 4 policy signals.
                     </span>
                     <button class="luna-btn primary ov-action-item-cta" data-component="Button" onclick="goToIntakeFromAction('tier')">
                         Review tier
@@ -8720,7 +8740,7 @@ Sarah</textarea>
                     <div class="ov-action-item">
                         <span class="ov-action-item-text">
                             <span class="ov-ai-tag"><span class="luna-icon" data-icon="sparkles" data-size="xs"></span> AI</span>
-                            <strong>${outstanding} required document${outstanding === 1 ? ' is' : 's are'} missing.</strong> Send DataStream a secure upload link — AI will auto-attach what they share.
+                            <strong>${outstanding} required document${outstanding === 1 ? ' is' : 's are'} missing.</strong> Send Acme a secure upload link — AI will auto-attach what they share.
                         </span>
                         <button class="luna-btn primary ov-action-item-cta" data-component="Button" onclick="goToIntakeFromAction('docs')">
                             Send request
@@ -8815,7 +8835,7 @@ Sarah</textarea>
         // After the state advances, route admin to Assessments tab so they see what AI is doing
         switchTab('questionnaires');
         if (window.LunaToast) {
-            LunaToast.success('Assessment started', 'DataStream Inc. moved to In Review. AI is now drafting questionnaire answers.');
+            LunaToast.success('Assessment started', 'Acme Corp moved to In Review. AI is now drafting questionnaire answers.');
         }
     }
     document.getElementById('startReviewModal').addEventListener('click', (e) => {
@@ -9089,7 +9109,7 @@ Sarah</textarea>
         // Stash payload for the vendor-facing page to consume
         try {
             localStorage.setItem('optroSentGaps', JSON.stringify({
-                vendor: 'DataStream Inc.',
+                vendor: 'Acme Corp',
                 sentAt: new Date().toISOString(),
                 subject: document.getElementById('sendGapsSubject').value,
                 intro: document.getElementById('sendGapsIntro').value,
@@ -9098,7 +9118,7 @@ Sarah</textarea>
             }));
         } catch(e) { /* ignore quota / private mode */ }
         closeSendGapsDrawer();
-        // Update each questionnaire card's gap-callout to "awaiting DataStream"
+        // Update each questionnaire card's gap-callout to "awaiting Acme"
         included.forEach(() => {});
         const counts = { 'sig-lite': 0, 'csa-caiq': 0, 'internal': 0 };
         included.forEach(g => counts[g.source]++);
@@ -9116,7 +9136,7 @@ Sarah</textarea>
         });
         if (window.LunaToast) {
             const total = included.length;
-            LunaToast.success('Magic link sent', `${total} gap${total===1?'':'s'} sent to security@datastream.com · expires in 14 days`);
+            LunaToast.success('Magic link sent', `${total} gap${total===1?'':'s'} sent to security@acmecorp.com · expires in 14 days`);
         }
     }
 
@@ -9125,7 +9145,7 @@ Sarah</textarea>
         const tbody = document.getElementById('docTableBody');
         tbody.querySelectorAll('tr[data-status="missing"]').forEach(tr => {
             tr.dataset.status = 'awaiting';
-            tr.children[1].innerHTML = '<em style="color:#475569;">Awaiting DataStream &middot; sent just now</em>';
+            tr.children[1].innerHTML = '<em style="color:#475569;">Awaiting Acme &middot; sent just now</em>';
             tr.children[2].innerHTML = '<span class="luna-badge blue weak" data-component="Badge">⏳ Awaiting</span>';
             // Action column: Re-send + a clearly-labeled sim affordance for prototype demos
             tr.children[3].innerHTML =
@@ -9139,7 +9159,7 @@ Sarah</textarea>
         });
         closeSendDrawer();
         if (window.LunaToast) {
-            LunaToast.success('Secure link sent', '2 docs requested from DataStream Inc. · CC&rsquo;d Jorge');
+            LunaToast.success('Secure link sent', '2 docs requested from Acme Corp · CC&rsquo;d Jorge');
         }
     }
 

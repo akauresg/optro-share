@@ -6167,7 +6167,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
         <div class="sidebar-section">
             <div class="sidebar-section-title">THIRD PARTY RISK</div>
             <a href="vendors.html" class="sidebar-item">Third Parties</a>
-            <a href="inbox.html" class="sidebar-item active">Inbox <span class="sidebar-count">14</span></a>
+            <a href="inbox.html" class="sidebar-item active">Inbox <span class="sidebar-count">13</span></a>
             <a href="issues.html" class="sidebar-item">Issues</a>
             <a href="contracts.html" class="sidebar-item">Contracts</a>
         </div>
@@ -6203,8 +6203,8 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
         </div>
 
         <div class="inbox-filter-bar">
-            <span class="inbox-chip on" data-filter="all" onclick="setInboxFilter('all')">All <span class="chip-count">14</span></span>
-            <span class="inbox-chip" data-filter="expiring-docs" onclick="setInboxFilter('expiring-docs')">Expiring Documents <span class="chip-count">9</span></span>
+            <span class="inbox-chip on" data-filter="all" onclick="setInboxFilter('all')">All <span class="chip-count">13</span></span>
+            <span class="inbox-chip" data-filter="expiring-docs" onclick="setInboxFilter('expiring-docs')">Expiring Documents <span class="chip-count">8</span></span>
             <span class="inbox-chip" data-filter="questionnaire-gaps" onclick="setInboxFilter('questionnaire-gaps')">Questionnaire Gaps for Vendors <span class="chip-count">3</span></span>
             <span class="inbox-chip" data-filter="tprm-signoff" onclick="setInboxFilter('tprm-signoff')">Awaiting TPRM signoff <span class="chip-count">2</span></span>
         </div>
@@ -6310,14 +6310,6 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                                 <td><span class="due-strong exp">May 22</span><div class="due-sub">11 days</div></td>
                                 <td><span class="row-action-link review" onclick="openReviewDrawer(this)">Review &amp; send</span></td>
                             </tr>
-                            <tr data-row-type="expiring-docs" data-vendor="Acme Corp">
-                                <td class="checkbox-cell"><input type="checkbox" class="row-check"></td>
-                                <td><span class="inbox-type-pill tp-refresh">Expiring Documents</span></td>
-                                <td><a class="cell-link vendor-link" href="vendor-detail?name=Acme%20Corp">Acme Corp</a></td>
-                                <td>SOC 2 Type II expires in 22 days<div class="item-sub">Source: Magic link · AI drafted refresh request</div></td>
-                                <td><span class="due-strong warn">Jun 2</span><div class="due-sub">22 days</div></td>
-                                <td><span class="row-action-link review" onclick="openReviewDrawer(this)">Review &amp; send</span></td>
-                            </tr>
                             <!-- Questionnaire Gaps for Vendors (3) -->
                             <tr data-row-type="questionnaire-gaps" data-vendor="DataStream Inc.">
                                 <td class="checkbox-cell"><input type="checkbox" class="row-check"></td>
@@ -6373,7 +6365,7 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
                     </select>
                 </div>
                 <div class="hplv-pagination-nav">
-                    <span class="hplv-pagination-range" id="inboxRange">1-14 of 14</span>
+                    <span class="hplv-pagination-range" id="inboxRange">1-13 of 13</span>
                     <button class="luna-btn" data-component="Button" data-size="xs" disabled><span class="luna-icon" data-icon="chevron-left"></span></button>
                     <button class="luna-btn" data-component="Button" data-size="xs" disabled><span class="luna-icon" data-icon="chevron-right"></span></button>
                 </div>
