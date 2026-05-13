@@ -6283,11 +6283,12 @@ const LUNA_ICONS = {"ab-assistant":"<svg xmlns=\"http://www.w3.org/2000/svg\" fi
     }
 
     function addToManagedVendors(name, options) {
-        const opts = options || { status: 'Intake', detailHref: 'vendor-detail-intake.html', tier: 'Tier 2', tierColor: 'orange weak', statusBadge: 'gray weak' };
+        const opts = options || { status: 'Intake', detailHref: 'vendor-detail.html', vendor: 'acme', tier: 'Tier 2', tierColor: 'orange weak', statusBadge: 'gray weak' };
         const tbody = document.querySelector('#tab-managed tbody');
         if (!tbody) return null;
         const tr = document.createElement('tr');
         const params = new URLSearchParams({ name });
+        if (opts.vendor) params.set('vendor', opts.vendor);
         if (opts.status) params.set('status', opts.status);
         if (opts.reason) params.set('reason', opts.reason);
         if (opts.notes) params.set('notes', opts.notes);

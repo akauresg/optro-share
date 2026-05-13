@@ -9086,18 +9086,20 @@ Sarah</textarea>
         const params = new URLSearchParams(window.location.search);
         const statusParam = (params.get('status') || '').toLowerCase();
         const nameParam = params.get('name');
+        // Accept "not-managed" (kebab) and "Not managed by TPRM" / "Not Managed" (badge label).
+        const isNotManaged = statusParam === 'not-managed' || statusParam.startsWith('not managed');
 
-        // Resolve vendor: explicit ?vendor=, or infer from ?status=not-managed +
+        // Resolve vendor: explicit ?vendor=, or infer from a not-managed status +
         // matching ?name= so the declined-vendor demo works from vendors.html.
         let vendorKey = (params.get('vendor') || '').toLowerCase();
-        if (!vendorKey && statusParam === 'not-managed') {
+        if (!vendorKey && isNotManaged) {
             const slug = (nameParam || '').toLowerCase().replace(/[^a-z0-9]/g, '');
             vendorKey = VENDOR_CONFIG[slug] ? slug : 'campaignpilot';
         }
         if (!vendorKey) vendorKey = 'acme';
 
         const cfg = VENDOR_CONFIG[vendorKey] || VENDOR_CONFIG.acme;
-        const state = (statusParam === 'not-managed') ? 'not-managed' : (params.get('state') || cfg.initialState);
+        const state = isNotManaged ? 'not-managed' : (params.get('state') || cfg.initialState);
 
         const root = document.querySelector('.content');
         if (root) {
@@ -9107,9 +9109,12 @@ Sarah</textarea>
             // For intake/in-review, default to "Missing required" if any are missing, else All.
         }
 
-        // Header + breadcrumb
-        setText('vendorName', cfg.name);
-        setText('breadcrumbVendor', cfg.name);
+        // Header + breadcrumb. For the not-managed demo proxy, prefer the ?name= URL param
+        // so an arbitrary declined vendor (e.g. DataStream Inc.) reads correctly even though
+        // the page borrows campaignpilot's config for everything else.
+        const displayName = (isNotManaged && nameParam) ? nameParam : cfg.name;
+        setText('vendorName', displayName);
+        setText('breadcrumbVendor', displayName);
         setText('vendorSourceLabel', cfg.sourceLabel);
         const sourcePill = document.getElementById('vendorSourcePill');
         if (sourcePill) sourcePill.style.display = cfg.showSourcePill ? 'inline-flex' : 'none';
@@ -9117,7 +9122,7 @@ Sarah</textarea>
         // Profile section
         const p = cfg.profile;
         setText('pfUid', p.uid);
-        setText('pfName', p.name);
+        setText('pfName', (isNotManaged && nameParam) ? nameParam : p.name);
         setText('pfCategory', p.category);
         setText('pfDescription', p.description);
         setEmptyState('pfDescription', p.descriptionIsEmpty);
