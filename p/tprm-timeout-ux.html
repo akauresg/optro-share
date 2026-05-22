@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TPRM stage timeout UX</title>
+<style>
+  :root {
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --border-soft: #f1f5f9;
+    --ink: #0f172a;
+    --ink-2: #334155;
+    --muted: #64748b;
+    --muted-2: #94a3b8;
+    --amber-bg: #fef3c7;
+    --amber-ink: #92400e;
+    --amber-ink-2: #78350f;
+    --amber-border: #f59e0b;
+    --slate-pill-bg: #e2e8f0;
+    --slate-pill-ink: #475569;
+    --green-bg: #dcfce7;
+    --green-ink: #166534;
+    --info-bg: #f0f9ff;
+    --info-border: #bae6fd;
+    --info-ink: #0369a1;
+    --info-ink-2: #0c4a6e;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+  }
+  header.hero {
+    margin-bottom: 36px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  header.hero h1 {
+    font-size: 28px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  header.hero p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 720px;
+    line-height: 1.55;
+  }
+  .section {
+    margin-top: 40px;
+  }
+  .section + .section {
+    margin-top: 48px;
+  }
+  .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .section h2 {
+    font-size: 18px;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+  .section .desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 16px;
+    max-width: 760px;
+    line-height: 1.5;
+  }
+  .mockup {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  }
+  .mockup-header {
+    background: #f1f5f9;
+    border-bottom: 1px solid var(--border);
+    padding: 8px 14px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* Surface 1: queue table */
+  .queue-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.2fr 1fr 110px;
+    gap: 12px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--ink);
+    align-items: center;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .queue-header {
+    background: #f8fafc;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 10px 16px;
+  }
+  .queue-row.alt { background: #fafafa; }
+  .queue-row strong { font-weight: 500; }
+  .muted { color: var(--muted); }
+  .pill {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .pill.active { background: var(--green-bg); color: var(--green-ink); }
+  .pill.paused { background: var(--slate-pill-bg); color: var(--slate-pill-ink); }
+  .pill.due-soon { background: var(--amber-bg); color: var(--amber-ink); }
+
+  /* Surface 2: vendor detail */
+  .detail-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .detail-header-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .detail-header-row strong { font-size: 15px; }
+  .stage-bar { display: flex; gap: 6px; }
+  .stage-bar > div { flex: 1; height: 5px; border-radius: 2px; }
+  .stage-bar .done { background: #10b981; }
+  .stage-bar .current { background: #94a3b8; }
+  .stage-bar .upcoming { background: #e2e8f0; }
+  .stage-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .stage-labels .current { color: var(--slate-pill-ink); font-weight: 600; }
+
+  .paused-banner {
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px;
+  }
+  .paused-banner-row { display: flex; gap: 12px; align-items: flex-start; }
+  .paused-icon { font-size: 20px; line-height: 1; }
+  .paused-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .paused-copy {
+    font-size: 13px;
+    color: var(--ink-2);
+    margin: 0 0 12px;
+    line-height: 1.55;
+    max-width: 620px;
+  }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn {
+    font-size: 12px;
+    padding: 7px 13px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--ink);
+    cursor: pointer;
+    font-weight: 500;
+    font-family: inherit;
+  }
+  .btn.primary {
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+  }
+  .btn.muted { color: var(--muted); }
+
+  .work-list { padding: 16px 20px; }
+  .work-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .work-item:last-child { border-bottom: none; }
+  .work-title { font-size: 13px; color: var(--ink); }
+  .work-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .work-date { font-size: 11px; color: var(--muted); }
+
+  /* Escalation row */
+  .escalation { display: flex; gap: 10px; }
+  .escalation > div {
+    flex: 1;
+    padding: 14px 16px;
+    border-radius: 6px;
+    border: 1px solid;
+  }
+  .esc-50 { background: var(--info-bg); border-color: var(--info-border); }
+  .esc-80 { background: var(--amber-bg); border-color: var(--amber-border); }
+  .esc-100 { background: #f8fafc; border-color: #cbd5e1; }
+  .esc-stage {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 4px;
+  }
+  .esc-50 .esc-stage { color: var(--info-ink); }
+  .esc-80 .esc-stage { color: var(--amber-ink); }
+  .esc-100 .esc-stage { color: var(--slate-pill-ink); }
+  .esc-copy { font-size: 12px; line-height: 1.45; }
+  .esc-50 .esc-copy { color: var(--info-ink-2); }
+  .esc-80 .esc-copy { color: var(--amber-ink-2); }
+  .esc-100 .esc-copy { color: #334155; }
+
+  .caption {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 10px;
+    line-height: 1.5;
+    max-width: 760px;
+  }
+  .caption em { color: var(--ink-2); font-style: normal; font-weight: 500; }
+
+  @media (max-width: 720px) {
+    .escalation { flex-direction: column; }
+    .queue-row, .queue-header { grid-template-columns: 1.4fr 1fr 90px; }
+    .queue-row > div:nth-child(3),
+    .queue-row > div:nth-child(4),
+    .queue-header > div:nth-child(3),
+    .queue-header > div:nth-child(4) { display: none; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header class="hero">
+    <h1>TPRM stage timeout UX</h1>
+    <p>A quick sketch of how an expired assessment stage could feel. Same pattern across surfaces: neutral "Paused" framing, recovery actions inline, in-progress work preserved.</p>
+  </header>
+
+  <div class="section">
+    <div class="label">Surface 1 — Vendor queue (list view)</div>
+    <h2>Scannable, no shame</h2>
+    <p class="desc">Neutral "Paused" pill so expired workflows don't shout in a long list. The amber tone is reserved for "Due soon" — the 80% warning, which is when the user can still save the workflow.</p>
+
+    <div class="mockup">
+      <div class="mockup-header">Vendor assessments</div>
+      <div class="queue-header queue-row">
+        <div>Vendor</div><div>Stage</div><div>Owner</div><div>Last activity</div><div>Status</div>
+      </div>
+      <div class="queue-row">
+        <div><strong>Snowflake</strong></div>
+        <div>Due Diligence</div>
+        <div>Priya Patel</div>
+        <div class="muted">2 days ago</div>
+        <div><span class="pill active">Active</span></div>
+      </div>
+      <div class="queue-row alt">
+        <div><strong>Datadog</strong></div>
+        <div>Due Diligence</div>
+        <div>Marcus Lee</div>
+        <div class="muted">92 days ago</div>
+        <div><span class="pill paused">Paused</span></div>
+      </div>
+      <div class="queue-row">
+        <div><strong>Okta</strong></div>
+        <div>Inherent Risk</div>
+        <div>Sara Cohen</div>
+        <div class="muted">18 hours ago</div>
+        <div><span class="pill due-soon">Due soon</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">Surface 2 — Vendor detail (stage view)</div>
+    <h2>Reflective tone, full context</h2>
+    <p class="desc">Slate banner with a pause icon, plain-language copy, and three recovery actions inline. The in-progress work the assessment collected (questionnaire progress, uploaded SOC report, reviewer notes) stays visible underneath so the owner can decide with full context, not in the dark.</p>
+
+    <div class="mockup">
+      <div class="mockup-header">Datadog · Vendor assessment</div>
+      <div class="detail-header">
+        <div class="detail-header-row">
+          <strong>Datadog</strong>
+          <span class="pill paused">Paused</span>
+        </div>
+        <div class="stage-bar">
+          <div class="done"></div>
+          <div class="done"></div>
+          <div class="current"></div>
+          <div class="upcoming"></div>
+        </div>
+        <div class="stage-labels">
+          <span>Intake</span><span>Inherent Risk</span><span class="current">Due Diligence</span><span>Monitoring</span>
+        </div>
+      </div>
+
+      <div class="paused-banner">
+        <div class="paused-banner-row">
+          <div class="paused-icon">⏸</div>
+          <div style="flex:1;">
+            <div class="paused-title">Due Diligence paused</div>
+            <p class="paused-copy">No activity for 90 days. Progress and uploaded documents are preserved below. Restart to resume, extend the window, or discontinue this assessment.</p>
+            <div class="actions">
+              <button class="btn primary">Restart stage</button>
+              <button class="btn">Extend</button>
+              <button class="btn muted">Discontinue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-list">
+        <div class="label">In-progress work (preserved)</div>
+        <div class="work-item">
+          <div>
+            <div class="work-title">Security questionnaire</div>
+            <div class="work-meta">82 of 120 answered</div>
+          </div>
+          <div class="work-date">Last edit · Mar 12</div>
+        </div>
+        <div class="work-item">
+          <div>
+            <div class="work-title">SOC 2 Type II report</div>
+            <div class="work-meta">Uploaded · soc2_2025.pdf</div>
+          </div>
+          <div class="work-date">Feb 28</div>
+        </div>
+        <div class="work-item">
+          <div>
+            <div class="work-title">Reviewer notes</div>
+            <div class="work-meta">3 entries from Marcus Lee</div>
+          </div>
+          <div class="work-date">Mar 5</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">Escalation cadence</div>
+    <h2>The hard timeout should rarely fire</h2>
+    <p class="desc">Two warnings before the cutoff. If they land, the expired state stays a tail case rather than the user's first encounter with the system "punishing" them.</p>
+
+    <div class="escalation">
+      <div class="esc-50">
+        <div class="esc-stage">~50%</div>
+        <div class="esc-copy">In-app banner only. <em>"Heads up: no activity in 45 days."</em></div>
+      </div>
+      <div class="esc-80">
+        <div class="esc-stage">~80%</div>
+        <div class="esc-copy"><em>"Due soon"</em> pill + email to owner and TPRM admin.</div>
+      </div>
+      <div class="esc-100">
+        <div class="esc-stage">100%</div>
+        <div class="esc-copy"><em>"Paused"</em> pill + banner. Recovery actions exposed. Work preserved.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>
