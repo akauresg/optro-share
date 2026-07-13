@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings v5 — Full page · Optro Prototype</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:0.875rem; line-height:1.5; color:#0f172a; background:#f8fafc; }
+.frame { max-width:1100px; margin:0 auto; padding:0 2rem 4rem; }
+.demo-bar { position:sticky; top:0; z-index:50; background:#0f172a; color:#e2e8f0; margin:0 -2rem; padding:10px 2rem; display:flex; align-items:center; gap:14px; font-size:0.8125rem; }
+.demo-bar b { font-weight:600; color:#fff; }
+.page-band { padding:1.75rem 0 1rem; }
+.page-band h1 { font-size:1.375rem; font-weight:700; letter-spacing:-0.01em; }
+.page-band .sub { color:#64748b; margin-top:2px; max-width:760px; }
+.card { background:#fff; border:1px solid #e2e8f0; border-radius:12px; margin-bottom:1.25rem; }
+.card-pad { padding:1.5rem 1.75rem; }
+.sect-title { font-size:1rem; font-weight:700; }
+.sect-sub { color:#64748b; font-size:0.8125rem; margin-top:1px; margin-bottom:14px; }
+.badge { display:inline-flex; align-items:center; gap:5px; font-size:0.6875rem; font-weight:600; padding:2px 9px; border-radius:999px; }
+.badge.green { background:#dcfce7; color:#166534; }
+.badge.purple { background:#f1eafd; color:#5b21b6; }
+.tier1 { background:#fee2e2; color:#991b1b; border-radius:6px; padding:1px 8px; font-weight:600; font-size:0.8125rem; white-space:nowrap; }
+.tier2 { background:#fef3c7; color:#92400e; border-radius:6px; padding:1px 8px; font-weight:600; font-size:0.8125rem; white-space:nowrap; }
+.tier3 { background:#dcfce7; color:#166534; border-radius:6px; padding:1px 8px; font-weight:600; font-size:0.8125rem; white-space:nowrap; }
+.factor { background:#f1eafd; color:#5b21b6; border-radius:6px; padding:1px 8px; font-weight:600; font-size:0.75rem; white-space:nowrap; }
+.cite { font-size:0.6875rem; color:#94a3b8; cursor:help; border-bottom:1px dotted #cbd5e1; white-space:nowrap; }
+.btn { border:1px solid #cbd5e1; background:#fff; border-radius:8px; font:inherit; font-size:0.8125rem; padding:6px 14px; cursor:pointer; color:#0f172a; }
+.btn:hover { background:#f8fafc; }
+.hidden { display:none !important; }
+.link { color:#6931e3; font-weight:600; cursor:pointer; font-size:0.75rem; }
+.link:hover { text-decoration:underline; }
+
+/* sources */
+.src-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+.src-row { display:flex; align-items:center; gap:10px; border:1px solid #e2e8f0; border-radius:10px; padding:10px 12px; }
+.src-icon { width:32px; height:32px; border-radius:8px; background:#f8fafc; display:flex; align-items:center; justify-content:center; font-size:0.9375rem; flex-shrink:0; }
+.src-name { font-weight:600; font-size:0.8125rem; }
+.src-meta { color:#64748b; font-size:0.6875rem; }
+.src-add { display:flex; align-items:center; justify-content:center; gap:8px; border:1.5px dashed #cbd5e1; border-radius:10px; padding:10px 12px; color:#64748b; font-size:0.8125rem; cursor:pointer; }
+.src-add:hover { border-color:#8254e8; color:#5b21b6; }
+.src-note { font-size:0.75rem; color:#94a3b8; margin-top:10px; }
+
+/* pipeline */
+.vpipe { position:relative; }
+.vpipe::before { content:''; position:absolute; left:17px; top:20px; bottom:20px; width:2px; background:#e9e2f8; }
+.vstage { position:relative; display:flex; gap:18px; padding:0 0 14px; }
+.vstage:last-child { padding-bottom:0; }
+.vnode { position:relative; z-index:1; width:36px; height:36px; border-radius:50%; background:#fff; border:2px solid #d8b4fe; color:#6931e3; font-weight:700; font-size:0.8125rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:6px; }
+.vstage.open .vnode { background:#6931e3; border-color:#6931e3; color:#fff; }
+.vbody { flex:1; min-width:0; }
+.vcard { border:1px solid #e2e8f0; border-radius:10px; background:#fff; transition:border-color .15s; }
+.vstage:hover .vcard { border-color:#c4b5fd; }
+.vstage.open .vcard { border-color:#8254e8; }
+.vhead { display:flex; align-items:center; gap:12px; padding:13px 16px; cursor:pointer; }
+.vtitle { font-weight:700; font-size:0.875rem; }
+.vsub { color:#64748b; font-size:0.8125rem; }
+.vchev { color:#94a3b8; font-size:0.75rem; margin-left:auto; }
+.vdetail { border-top:1px solid #f1f5f9; padding:14px 18px 16px; background:#fafbff; border-radius:0 0 10px 10px; }
+.vdetail h4 { font-size:0.6875rem; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.05em; margin:14px 0 6px; display:flex; align-items:center; gap:10px; }
+.vdetail h4:first-child { margin-top:0; }
+.rule-line { display:flex; gap:8px; align-items:center; padding:3px 0; font-size:0.8125rem; flex-wrap:wrap; }
+.rule-kw { width:34px; font-size:0.6875rem; font-weight:700; color:#94a3b8; }
+.rule-box { background:#fff; border:1px solid #e2e8f0; border-radius:6px; padding:1px 8px; }
+.rule-op { color:#64748b; }
+table.mx { width:100%; border-collapse:collapse; font-size:0.8125rem; background:#fff; border-radius:8px; overflow:hidden; border:1px solid #e2e8f0; }
+table.mx th { text-align:left; font-size:0.6875rem; text-transform:uppercase; letter-spacing:0.04em; color:#94a3b8; font-weight:600; padding:6px 10px; border-bottom:1px solid #e2e8f0; background:#fafbfc; }
+table.mx td { padding:8px 10px; border-bottom:1px solid #f1f5f9; vertical-align:top; }
+table.mx tr:last-child td { border-bottom:none; }
+.add { color:#5b21b6; font-weight:600; }
+.dim { color:#94a3b8; }
+.edit-hint { margin-top:12px; display:flex; align-items:center; gap:8px; }
+.edit-hint input { flex:1; border:1px solid #e2e8f0; border-radius:8px; font:inherit; font-size:0.8125rem; padding:6px 12px; outline:none; background:#fff; }
+.edit-hint input:focus { border-color:#8254e8; }
+.spark { color:#8254e8; }
+.factor-ref { display:flex; align-items:center; gap:8px; background:#fff; border:1px solid #e9e2f8; border-radius:8px; padding:8px 12px; font-size:0.8125rem; color:#475569; }
+#factors-card { transition:box-shadow .3s, border-color .3s; }
+#factors-card.flash { border-color:#8254e8; box-shadow:0 0 0 4px #f1eafd; }
+.add-row td { color:#6931e3; font-weight:600; cursor:pointer; }
+.add-row:hover td { background:#fdfcff; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="demo-bar">
+    <b>Settings v5 — the whole page</b>
+    <span>Sources · pipeline · one shared vendor-factors catalog</span>
+  </div>
+
+  <div class="page-band">
+    <h1>Settings</h1>
+    <div class="sub">Everything the agent knows about your process, where it learned it, and the rules it runs.</div>
+  </div>
+
+  <!-- ===== 1 · SOURCES ===== -->
+  <div class="card"><div class="card-pad">
+    <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+      <div>
+        <div class="sect-title">What the agent has learned from</div>
+        <div class="sect-sub">Your process below is derived from these sources. Add or replace one and the agent proposes an updated process — shown as a diff, applied only when you approve.</div>
+      </div>
+      <span class="badge green">Active · v1</span>
+    </div>
+    <div class="src-grid">
+      <div class="src-row">
+        <div class="src-icon">📕</div>
+        <div style="min-width:0">
+          <div class="src-name">TPRM_Policy_v3.pdf</div>
+          <div class="src-meta">tiering §3 · evidence §4 · cadence §5</div>
+        </div>
+      </div>
+      <div class="src-row">
+        <div class="src-icon">📗</div>
+        <div style="min-width:0">
+          <div class="src-name">VMO_DDQ_Trigger_Logic.xlsx</div>
+          <div class="src-meta">11 questionnaires · trigger map</div>
+        </div>
+      </div>
+      <div class="src-row">
+        <div class="src-icon">💬</div>
+        <div style="min-width:0">
+          <div class="src-name">Setup interview</div>
+          <div class="src-meta">3 answers · view or change any time</div>
+        </div>
+      </div>
+    </div>
+    <div class="src-add" style="margin-top:10px">＋ Add a source — policy PDF, trigger sheet, spreadsheet, or an export from your old tool</div>
+  </div></div>
+
+  <!-- ===== 2 · PIPELINE ===== -->
+  <div class="card"><div class="card-pad">
+    <div class="sect-title">Your process</div>
+    <div class="sect-sub">The pipeline the agent runs on every vendor. Expand a stage to see and refine its exact rules — every rule cites its source.</div>
+    <div class="vpipe">
+
+      <div class="vstage" id="vs0">
+        <div class="vnode">1</div>
+        <div class="vbody">
+          <div class="vcard">
+            <div class="vhead" onclick="toggleStage(0)">
+              <div>
+                <div class="vtitle">Vendor arrives</div>
+                <div class="vsub">From Zip or manual add · profile auto-enriched</div>
+              </div>
+              <span class="vchev" id="vc0">▸</span>
+            </div>
+            <div class="vdetail hidden" id="vd0">
+              <h4>Intake sources</h4>
+              <div class="rule-line"><span class="rule-box">Zip</span><span class="rule-op">auto-creates vendor · imports spend, category, business owner</span></div>
+              <div class="rule-line"><span class="rule-box">Manual add</span><span class="rule-op">TPRM team or business owner</span></div>
+              <h4>On arrival</h4>
+              <div class="rule-line"><span class="rule-op">Agent enriches the profile — domain, EIN, parent company, operating regions — then moves to tiering. <span class="cite" title="Policy §2.1: All new third parties must be identified at procurement intake">policy §2.1</span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vstage" id="vs1">
+        <div class="vnode">2</div>
+        <div class="vbody">
+          <div class="vcard">
+            <div class="vhead" onclick="toggleStage(1)">
+              <div>
+                <div class="vtitle">Tier assigned</div>
+                <div class="vsub">3 tiers · rules run top to bottom, first match wins · a human confirms Tier 1</div>
+              </div>
+              <span class="vchev" id="vc1">▸</span>
+            </div>
+            <div class="vdetail hidden" id="vd1">
+              <h4><span class="tier1">Tier 1 · Critical</span> &nbsp;<span class="cite" title="Policy §3.2(a)">§3.2(a)</span></h4>
+              <div class="rule-line"><span class="rule-kw">IF</span><span class="rule-box">Data classification</span><span class="rule-op">contains</span><span class="rule-box">PII / PHI</span></div>
+              <div class="rule-line"><span class="rule-kw">OR</span><span class="rule-box">Annual spend</span><span class="rule-op">≥</span><span class="rule-box">$100,000</span></div>
+              <div class="rule-line"><span class="rule-kw">OR</span><span class="rule-box">System access</span><span class="rule-op">=</span><span class="rule-box">Infrastructure / admin</span></div>
+              <h4><span class="tier2">Tier 2 · Standard</span> &nbsp;<span class="cite" title="Policy §3.2(b)">§3.2(b)</span></h4>
+              <div class="rule-line"><span class="rule-kw">IF</span><span class="rule-box">Annual spend</span><span class="rule-op">between</span><span class="rule-box">$25,000 – $100,000</span></div>
+              <div class="rule-line"><span class="rule-kw">AND</span><span class="rule-box">Data classification</span><span class="rule-op">does not contain</span><span class="rule-box">PII / PHI</span></div>
+              <h4><span class="tier3">Tier 3 · Low risk</span></h4>
+              <div class="rule-line"><span class="rule-kw">IF</span><span class="rule-op">no higher rule matches</span></div>
+              <div class="edit-hint"><span class="spark">✦</span><input placeholder='Refine — "treat any vendor with EU personal data as at least Tier 2"'><button class="btn">Preview</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vstage" id="vs2">
+        <div class="vnode">3</div>
+        <div class="vbody">
+          <div class="vcard">
+            <div class="vhead" onclick="toggleStage(2)">
+              <div>
+                <div class="vtitle">Evidence collected</div>
+                <div class="vsub">Tier sets the baseline · vendor factors add to it · agent fetches first, asks last</div>
+              </div>
+              <span class="vchev" id="vc2">▸</span>
+            </div>
+            <div class="vdetail hidden" id="vd2">
+              <h4>Baseline — by tier</h4>
+              <table class="mx">
+                <tr><th style="width:26%">Tier</th><th>Agent collects</th></tr>
+                <tr><td><span class="tier1">Tier 1</span></td><td>SOC 2 Type II · ISO 27001 · pen test · cyber insurance</td></tr>
+                <tr><td><span class="tier2">Tier 2</span></td><td>SOC 2 Type II · insurance cert</td></tr>
+                <tr><td><span class="tier3">Tier 3</span></td><td>Insurance cert</td></tr>
+              </table>
+              <h4>Added by vendor factors</h4>
+              <div class="factor-ref">
+                <span><span class="factor">payments</span> <span class="factor">EU data</span> <span class="factor">sub-processors</span> add evidence on top of any tier</span>
+                <span class="link" style="margin-left:auto" onclick="goFactors()">Edit in vendor factors ↓</span>
+              </div>
+              <h4>Collection order</h4>
+              <div class="rule-line"><span class="rule-op">1. Trust center &amp; public artifacts → 2. Prior assessments on file → 3. Secure link to vendor, only for what's still missing</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vstage" id="vs3">
+        <div class="vnode">4</div>
+        <div class="vbody">
+          <div class="vcard">
+            <div class="vhead" onclick="toggleStage(3)">
+              <div>
+                <div class="vtitle">Questionnaires answered</div>
+                <div class="vsub">Tier sets the baseline · vendor factors add to it · answered by the agent from evidence, never sent blank</div>
+              </div>
+              <span class="vchev" id="vc3">▸</span>
+            </div>
+            <div class="vdetail hidden" id="vd3">
+              <h4>Baseline — by tier</h4>
+              <table class="mx">
+                <tr><th style="width:26%">Tier</th><th>Questionnaires to satisfy</th></tr>
+                <tr><td><span class="tier1">Tier 1</span></td><td>InfoSec (84q) · Privacy (42q) · BC/DR (28q)</td></tr>
+                <tr><td><span class="tier2">Tier 2</span></td><td>SIG Lite (126q)</td></tr>
+                <tr><td><span class="tier3">Tier 3</span></td><td>Self-attestation</td></tr>
+              </table>
+              <h4>Added by vendor factors</h4>
+              <div class="factor-ref">
+                <span><span class="factor">uses AI</span> <span class="factor">EU data</span> <span class="factor">moves money</span> add questionnaires on top of any tier</span>
+                <span class="link" style="margin-left:auto" onclick="goFactors()">Edit in vendor factors ↓</span>
+              </div>
+              <h4>How they're answered</h4>
+              <div class="rule-line"><span class="rule-op">The agent answers every question from collected evidence, citing the exact document and page. Nothing is ever sent to the vendor blank.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vstage" id="vs4">
+        <div class="vnode">5</div>
+        <div class="vbody">
+          <div class="vcard">
+            <div class="vhead" onclick="toggleStage(4)">
+              <div>
+                <div class="vtitle">Gaps go to the vendor</div>
+                <div class="vsub">One consolidated ask · owner reviews before send</div>
+              </div>
+              <span class="vchev" id="vc4">▸</span>
+            </div>
+            <div class="vdetail hidden" id="vd4">
+              <h4>Gap handling</h4>
+              <div class="rule-line"><span class="rule-op">Questions the agent couldn't answer are consolidated into ONE vendor ask — not eleven separate questionnaires.</span></div>
+              <div class="rule-line"><span class="rule-kw">WHO</span><span class="rule-box">Assessment owner</span><span class="rule-op">reviews the gap list before it is sent</span><span class="cite" title="From your setup interview">interview</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vstage" id="vs5">
+        <div class="vnode">6</div>
+        <div class="vbody">
+          <div class="vcard">
+            <div class="vhead" onclick="toggleStage(5)">
+              <div>
+                <div class="vtitle">Reassessed on cadence</div>
+                <div class="vsub">By tier · expirations tracked continuously in between</div>
+              </div>
+              <span class="vchev" id="vc5">▸</span>
+            </div>
+            <div class="vdetail hidden" id="vd5">
+              <h4>Reassessment cadence</h4>
+              <table class="mx">
+                <tr><td style="width:26%"><span class="tier1">Tier 1</span></td><td>Annual <span class="cite" title="Policy §5.1">§5.1</span></td></tr>
+                <tr><td><span class="tier2">Tier 2</span></td><td>Every 18 months <span class="cite" title="From your setup interview — policy was silent">interview</span></td></tr>
+                <tr><td><span class="tier3">Tier 3</span></td><td>At contract renewal</td></tr>
+              </table>
+              <h4>Between reviews</h4>
+              <div class="rule-line"><span class="rule-op">Certification expirations tracked continuously — agent requests refreshed docs before they lapse.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div></div>
+
+  <!-- ===== 3 · VENDOR FACTORS CATALOG ===== -->
+  <div class="card" id="factors-card"><div class="card-pad">
+    <div class="sect-title">Vendor factors</div>
+    <div class="sect-sub">Facts about a vendor that expand due diligence beyond its tier. One catalog — stages 3 and 4 both read from it, so a factor is defined once and applied everywhere.</div>
+    <table class="mx">
+      <tr>
+        <th style="width:26%">If the vendor…</th>
+        <th style="width:37%">Also collect (evidence)</th>
+        <th>Also satisfy (questionnaires)</th>
+      </tr>
+      <tr>
+        <td><span class="factor">uses AI on our data</span></td>
+        <td class="dim">—</td>
+        <td><span class="add">+ AI use-case questionnaire (18q)</span> <span class="cite" title="Resolved in your setup interview — trigger sheet conflict">interview</span></td>
+      </tr>
+      <tr>
+        <td><span class="factor">stores EU personal data</span></td>
+        <td><span class="add">+ signed DPA · GDPR addendum</span></td>
+        <td><span class="add">+ Privacy questionnaire (42q)</span> <span class="dim">if not in tier baseline</span></td>
+      </tr>
+      <tr>
+        <td><span class="factor">processes payments</span></td>
+        <td><span class="add">+ PCI DSS attestation</span></td>
+        <td class="dim">—</td>
+      </tr>
+      <tr>
+        <td><span class="factor">accesses or moves money</span></td>
+        <td class="dim">—</td>
+        <td><span class="add">+ Financial controls questionnaire (22q)</span></td>
+      </tr>
+      <tr>
+        <td><span class="factor">relies on sub-processors</span></td>
+        <td><span class="add">+ sub-processor list · flow-down terms</span></td>
+        <td class="dim">—</td>
+      </tr>
+      <tr class="add-row" onclick="this.innerHTML='<td colspan=3 style=color:#94a3b8>In the real product this opens a small form: pick or describe the vendor fact, then what it adds — or type it in plain language and let the agent draft the row.</td>'">
+        <td colspan="3">＋ Add a factor</td>
+      </tr>
+    </table>
+    <div class="src-note">Where does the agent learn these facts? From Zip intake fields, the vendor profile, and its own evidence review — you don't fill these in manually.</div>
+  </div></div>
+
+  <div style="color:#94a3b8; font-size:0.75rem; padding:0 4px;">
+    Derived Jul 13 from TPRM_Policy_v3.pdf · VMO_DDQ_Trigger_Logic.xlsx · 3 interview answers.
+  </div>
+</div>
+
+<script>
+function toggleStage(i) {
+  const d = document.getElementById('vd' + i);
+  const open = d.classList.toggle('hidden');
+  document.getElementById('vs' + i).classList.toggle('open', !open);
+  document.getElementById('vc' + i).textContent = open ? '▸' : '▾';
+}
+function goFactors() {
+  const c = document.getElementById('factors-card');
+  c.scrollIntoView({behavior:'smooth', block:'center'});
+  c.classList.add('flash');
+  setTimeout(() => c.classList.remove('flash'), 1600);
+}
+</script>
+</body>
+</html>
