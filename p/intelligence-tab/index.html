@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intelligence tab · Layout explorations</title>
+<link rel="stylesheet" href="luna.css">
+<style>
+  .hero { max-width:900px; margin:2.5rem auto 0; padding:0 1.25rem; }
+  .hero h1 { font-size:1.5rem; letter-spacing:0.03rem; }
+  .hero p { color:var(--luna-gray-600); max-width:640px; }
+  .options { max-width:900px; margin:1.5rem auto 3rem; padding:0 1.25rem; display:grid; gap:0.875rem; }
+  .opt { display:flex; gap:1rem; padding:1rem 1.125rem; align-items:flex-start; text-decoration:none; color:inherit; }
+  .opt:hover { border-color:var(--luna-teal-500); text-decoration:none; box-shadow:var(--luna-shadow-300); }
+  .opt-letter {
+    width:36px; height:36px; border-radius:var(--luna-radius-md); flex:none;
+    background:var(--luna-teal-600); color:#fff; font-weight:700; font-size:1rem;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .opt h2 { font-size:0.9375rem; }
+  .opt p { margin:0.25rem 0 0; font-size:0.8125rem; color:var(--luna-gray-600); }
+  .opt .rec { margin-left:auto; align-self:flex-start; }
+  .sketch { display:flex; gap:3px; width:88px; height:56px; flex:none; margin-left:auto; align-self:center; }
+  .sk { background:var(--luna-gray-200); border-radius:2px; }
+</style>
+</head>
+<body>
+<div class="app-topbar">
+  <span class="brand"><span class="brand-mark"></span>Optro</span>
+  <span class="crumb-sep">/</span><span>Vendor Monitoring · Intelligence tab · design explorations</span>
+  <div class="topbar-right"><span class="avatar">AK</span></div>
+</div>
+
+<div class="hero">
+  <h1>Intelligence tab: three layout explorations</h1>
+  <p>Same vendor (Meridian Payroll Systems, Tier 1 payroll), same five-signal storyline in each.
+  Everything is clickable: expand signals, run every action, dismiss with a reason, answer the quarantined match, decide the cadence proposal.</p>
+</div>
+
+<div class="options">
+  <a class="card opt" href="intelligence.html" style="border-color:var(--luna-teal-500)">
+    <span class="opt-letter">✓</span>
+    <div>
+      <div style="display:flex;gap:0.5rem;align-items:center"><h2>Converged design</h2><span class="badge teal strong">Chosen · Aug 18</span></div>
+      <p>Option A promoted, plus correlated-signal handling: one inquiry, notification, or issue can cover
+      both related breach signals, logged on both review records.</p>
+    </div>
+    <span class="sketch"><span class="sk" style="flex:1"></span></span>
+  </a>
+  <a class="card opt" href="inquiry-review.html" style="border-color:var(--luna-teal-500)">
+    <span class="opt-letter">↩</span>
+    <div>
+      <div style="display:flex;gap:0.5rem;align-items:center"><h2>Response review flow</h2><span class="badge purple">New</span></div>
+      <p>Three days later: Meridian answers inquiry INQ-1042. Per-question evaluation, Watchtower's read,
+      and a proposed escalation you approve, adjust, or override with a close.</p>
+    </div>
+    <span class="sketch" style="flex-direction:column"><span class="sk" style="flex:1"></span><span class="sk" style="flex:2"></span></span>
+  </a>
+  <a class="card opt" href="option-a.html">
+    <span class="opt-letter">A</span>
+    <div>
+      <h2>Priority queue</h2>
+      <p>One column, top-down: what needs attention first, fully expanded with grounding and actions inline.
+      Quiet items collapse into "Handled quietly". Coverage is the footer.</p>
+    </div>
+    <span class="sketch"><span class="sk" style="flex:1"></span></span>
+  </a>
+  <a class="card opt" href="option-b.html">
+    <span class="opt-letter">B</span>
+    <div>
+      <h2>Split workbench</h2>
+      <p>Dense signal list on the left, full detail and a pinned action bar on the right, keyboard navigation.
+      Built for clearing many signals fast.</p>
+    </div>
+    <span class="sketch"><span class="sk" style="width:30px"></span><span class="sk" style="flex:1"></span></span>
+  </a>
+  <a class="card opt" href="option-c.html">
+    <span class="opt-letter">C</span>
+    <div>
+      <h2>Case file</h2>
+      <p>Correlated signals cluster into one case with a shared evidence timeline and one decision.
+      Everything else sits in a chronological ledger below.</p>
+    </div>
+    <span class="sketch" style="flex-direction:column"><span class="sk" style="flex:2"></span><span class="sk" style="flex:1"></span></span>
+  </a>
+</div>
+</body>
+</html>
