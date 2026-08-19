@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Option C · Case File · Intelligence tab</title>
+<link rel="stylesheet" href="luna.css">
+<style>
+  .case { border-left:3px solid var(--luna-red-500); margin-bottom:0.875rem; }
+  .case-head { padding:0.75rem 1rem; display:flex; align-items:flex-start; gap:0.625rem; border-bottom:var(--luna-border); }
+  .case-title { font-size:0.9375rem; font-weight:600; }
+  .case-sub { font-size:0.75rem; color:var(--luna-gray-500); margin-top:0.125rem; }
+  .case-head .chips { margin-left:auto; display:flex; gap:0.375rem; align-items:center; flex-wrap:wrap; }
+  .case-body { padding:0.875rem 1rem; }
+
+  /* Evidence timeline inside the case */
+  .tl { list-style:none; margin:0; padding:0; position:relative; }
+  .tl::before { content:""; position:absolute; left:8px; top:8px; bottom:8px; width:2px; background:var(--luna-gray-200); }
+  .tl-item { position:relative; padding:0 0 0.875rem 1.75rem; }
+  .tl-item:last-child { padding-bottom:0; }
+  .tl-node {
+    position:absolute; left:0; top:2px; width:18px; height:18px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:0.5625rem;
+    background:var(--luna-white); border:2px solid var(--luna-gray-300); color:var(--luna-gray-500);
+  }
+  .tl-node.critical { border-color:var(--luna-red-500); background:var(--luna-red-100); color:var(--luna-red-700); }
+  .tl-node.high { border-color:var(--luna-orange-400); background:var(--luna-orange-100); color:var(--luna-orange-700); }
+  .tl-head { display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; }
+  .tl-when { font-size:0.6875rem; color:var(--luna-gray-400); font-weight:600; text-transform:uppercase; letter-spacing:0.03rem; }
+  .tl-title { font-size:0.8125rem; font-weight:600; }
+  .tl-detail { font-size:0.8125rem; color:var(--luna-gray-600); margin-top:0.125rem; }
+  .tl-record { margin-top:0.25rem; }
+  .tl-record summary { font-size:0.6875rem; color:var(--luna-gray-500); cursor:pointer; user-select:none; }
+  .tl-record summary:hover { color:var(--luna-gray-700); }
+
+  .case-actions {
+    border-top:var(--luna-border); background:var(--luna-gray-50);
+    padding:0.625rem 1rem; display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;
+    border-radius:0 0 var(--luna-radius-md) var(--luna-radius-md);
+  }
+  .case-actions .spacer { flex:1; }
+  .seam-note { font-size:0.6875rem; color:var(--luna-gray-400); }
+
+  .cadence-inline {
+    display:flex; align-items:center; gap:0.625rem; margin-top:0.875rem;
+    background:var(--luna-purple-50); border:1px solid var(--luna-purple-100);
+    border-radius:var(--luna-radius-sm); padding:0.5rem 0.75rem; font-size:0.8125rem;
+  }
+
+  /* Ledger */
+  .ledger-row { display:flex; align-items:center; gap:0.625rem; padding:0.5625rem 1rem; cursor:pointer; }
+  .ledger-row:hover { background:var(--luna-gray-50); }
+  .ledger-item { border-top:var(--luna-border); }
+  .ledger-item:first-child { border-top:none; }
+  .ledger-detail { display:none; padding:0 1rem 0.75rem 2.75rem; }
+  .ledger-item.open .ledger-detail { display:block; }
+  .ledger-when { width:52px; flex:none; font-size:0.6875rem; color:var(--luna-gray-400); font-variant-numeric:tabular-nums; }
+  .ledger-ico { width:22px; height:22px; border-radius:var(--luna-radius-full); flex:none;
+    display:flex; align-items:center; justify-content:center; font-size:0.6875rem; }
+  .ledger-ico.pos { background:var(--luna-green-100); color:var(--luna-green-700); }
+  .ledger-ico.dis { background:var(--luna-gray-100); color:var(--luna-gray-500); }
+  .ledger-ico.quar { background:none; border:1.5px dashed var(--luna-gray-400); color:var(--luna-gray-400); }
+  .ledger-row .chips { margin-left:auto; display:flex; gap:0.375rem; align-items:center; }
+  .quar-fence { background:var(--luna-gray-50); }
+  .dimmed { opacity:0.55; }
+</style>
+</head>
+<body>
+
+<div class="app-topbar">
+  <span class="brand"><span class="brand-mark"></span>Optro</span>
+  <span class="crumb-sep">/</span><a href="#" onclick="return false;">Third-Party Risk</a>
+  <span class="crumb-sep">/</span><a href="#" onclick="return false;">Vendors</a>
+  <span class="crumb-sep">/</span><span style="color:var(--luna-gray-800);font-weight:600">Meridian Payroll Systems</span>
+  <div class="topbar-right">
+    <a class="tiny" href="index.html">Exploration C of 3 · switch</a>
+    <span class="avatar">AK</span>
+  </div>
+</div>
+
+<div class="vendor-header">
+  <div class="vendor-header-row">
+    <span class="avatar lg">MP</span>
+    <div>
+      <div style="display:flex;align-items:center;gap:0.5rem">
+        <span class="vendor-title">Meridian Payroll Systems</span>
+        <span class="badge red">Tier 1</span>
+        <span class="badge gray">Active</span>
+      </div>
+      <div class="vendor-meta">
+        <span>Payroll processing</span><span>·</span>
+        <span>Business owner: Dana Whitfield</span><span>·</span>
+        <span>Next review: Feb 12, 2027</span>
+      </div>
+    </div>
+    <div class="vendor-header-actions">
+      <button class="btn sm">Log activity</button>
+      <button class="btn sm">Actions <span class="caret">▼</span></button>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab">Overview</button>
+    <button class="tab">Profile</button>
+    <button class="tab">Lifecycle</button>
+    <button class="tab">Documents</button>
+    <button class="tab">Assessment</button>
+    <button class="tab">Issues</button>
+    <button class="tab active">Intelligence <span class="badge red">1</span></button>
+  </div>
+</div>
+
+<div class="page" style="max-width:1000px">
+
+  <!-- ==================== OPEN CASE ==================== -->
+  <div class="section-label">Open case <span class="badge red">1</span></div>
+
+  <div class="card case" data-signal-card="8k">
+    <div class="case-head">
+      <div>
+        <div class="case-title">Data security incident at Meridian Payroll</div>
+        <div class="case-sub">2 signals treated as one incident · opened by Watchtower Aug 11 · escalated today</div>
+      </div>
+      <div class="chips">
+        <span class="badge red xstrong">Critical</span>
+        <span class="badge green">Match verified</span>
+        <span class="badge blue" data-status="8k">Needs review</span>
+      </div>
+    </div>
+
+    <div class="case-body">
+      <div class="matters">
+        <div class="matters-title">✦ Why this matters to you</div>
+        <ul>
+          <li>Meridian runs payroll for all 4,200 of your employees and holds SSNs, bank account numbers, and compensation data. <a class="cite internal" onclick="return openCite('Questionnaire 2026, Q4.2')"><span class="src-ico"></span>Questionnaire 2026 · Q4.2</a></li>
+          <li>Meridian itself judged the incident material under Item 1.05. That is their assessment, not a media report. <a class="cite" onclick="return openCite('SEC EDGAR 8-K')"><span class="src-ico"></span>SEC EDGAR · 8-K</a></li>
+          <li>Your DPA requires vendor notice within 72 hours of a confirmed incident affecting your data. No notice has been received. <a class="cite internal" onclick="return openCite('Contract, clause 9.3')"><span class="src-ico"></span>Contract · clause 9.3</a></li>
+          <li>Tier 1 playbook recommends a formal inquiry within 24 hours of a breach signal. <a class="cite internal" onclick="return openCite('Monitoring playbook (Settings)')"><span class="src-ico"></span>Playbook · Tier 1 breach</a></li>
+        </ul>
+      </div>
+
+      <div class="section-label">How this unfolded</div>
+      <ul class="tl">
+        <li class="tl-item">
+          <span class="tl-node high">!</span>
+          <div class="tl-head">
+            <span class="tl-when">Aug 11</span>
+            <span class="tl-title">Leak-site listing references meridianpayroll.com</span>
+            <span class="badge orange strong">High</span>
+            <span class="badge green">Match 92%</span>
+            <span class="badge yellow" data-status="leak">Watching · resurfaced</span>
+          </div>
+          <div class="tl-detail">Listing on the cl0p leak site claiming 2.1 TB from "meridianpayroll.com". <a class="cite" onclick="return openCite('Leak-site capture, Aug 11 (archived)')"><span class="src-ico"></span>Archived capture</a></div>
+          <details class="tl-record">
+            <summary>Per-signal review record (3 entries)</summary>
+            <ul class="trail" data-trail="leak">
+              <li>Detected and graded <strong>High</strong> by Watchtower · Aug 11, 4:20 PM</li>
+              <li><strong>Watching</strong> set by Priya Shah, note: "Single-source claim, wait for corroboration" · Aug 12</li>
+              <li><strong>Auto-resurfaced</strong> by Watchtower: corroborating 8-K filed · today, 6:58 AM</li>
+            </ul>
+          </details>
+        </li>
+        <li class="tl-item">
+          <span class="tl-node critical">!</span>
+          <div class="tl-head">
+            <span class="tl-when">Today</span>
+            <span class="tl-title">SEC 8-K filed: material cybersecurity incident</span>
+            <span class="badge red xstrong">Critical</span>
+            <span class="badge green">Match verified</span>
+          </div>
+          <div class="tl-detail">Filed 6:42 AM ET under Item 1.05, reporting <i>"unauthorized activity within a portion of its production environment"</i> (Meridian 8-K). Trust page shows an incident banner; no customer notice posted. <a class="cite" onclick="return openCite('SEC EDGAR accession 0001728394-26-000041')"><span class="src-ico"></span>EDGAR filing</a> <a class="cite" onclick="return openCite('trust.meridianpayroll.com')"><span class="src-ico"></span>Trust page</a></div>
+          <details class="tl-record">
+            <summary>Per-signal review record (2 entries)</summary>
+            <ul class="trail" data-trail="8k">
+              <li>Detected and graded <strong>Critical</strong> by Watchtower · today, 6:58 AM</li>
+              <li>Linked to the Aug 11 listing as one incident, 96% confidence · today, 6:58 AM</li>
+            </ul>
+          </details>
+        </li>
+      </ul>
+
+      <div class="cadence-inline">
+        <span class="badge purple">✦ Proposal</span>
+        <span style="flex:1">Move the next scheduled review from <b>Feb 12, 2027</b> to <b>Sep 15, 2026</b> while this case is open. <span class="badge purple" data-status="cadence">Awaiting your decision</span></span>
+        <span style="display:flex;gap:0.5rem" data-cadence-actions>
+          <button class="btn primary xs" onclick="cadenceConfirm()">Move to Sep 15</button>
+          <button class="btn xs" onclick="cadenceKeep()">Keep Feb 12</button>
+        </span>
+      </div>
+    </div>
+
+    <div class="case-actions">
+      <button class="btn primary sm" onclick="act('inquiry','8k')">Send inquiry</button>
+      <button class="btn sm" onclick="act('notify','8k')">Notify owner</button>
+      <button class="btn sm" onclick="act('issue','8k')">Open issue</button>
+      <button class="btn sm" onclick="act('accept','8k')">Accept risk</button>
+      <button class="btn sm" onclick="act('watch','8k')">Watch</button>
+      <button class="btn transparent sm" onclick="act('dismiss','8k')">Dismiss</button>
+      <span class="spacer"></span>
+      <span class="seam-note">One decision covers the whole case. The vendor reply lands here with Watchtower's evaluation.</span>
+    </div>
+  </div>
+
+  <!-- ==================== LEDGER ==================== -->
+  <div class="section-label">Everything else · chronological ledger <span class="badge gray">3</span></div>
+  <div class="card">
+
+    <div class="ledger-item quar-fence" data-signal-card="quar" id="led-quar">
+      <div class="ledger-row" onclick="toggleExpand('led-quar')">
+        <span class="ledger-when">Aug 14</span>
+        <span class="ledger-ico quar">?</span>
+        <span><b>Possible match, quarantined:</b> <span class="muted">court judgment against "Meridian Payroll Services Ltd", Manchester, UK</span></span>
+        <div class="chips">
+          <span class="badge gray outline">Match 41%</span>
+          <span class="badge gray" data-status="quar">Quarantined</span>
+        </div>
+      </div>
+      <div class="ledger-detail">
+        <div class="small muted" style="margin-bottom:0.5rem">
+          Held out of the case list and the record: name similarity only, no shared domain, registration, or jurisdiction.
+          Your vendor is Meridian Payroll Systems Inc., Denver, US.
+          <a class="cite" onclick="return openCite('UK court record')" style="margin-left:0.25rem"><span class="src-ico"></span>Court record</a>
+        </div>
+        <div style="display:flex;gap:0.5rem">
+          <button class="btn xs" onclick="quarantineConfirm()">It is our vendor</button>
+          <button class="btn xs" onclick="quarantineReject()">Not our vendor</button>
+          <span class="seam-note" style="align-self:center">Your answer trains matching.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ledger-item" id="led-exec">
+      <div class="ledger-row" onclick="toggleExpand('led-exec')">
+        <span class="ledger-when">Aug 6</span>
+        <span class="ledger-ico dis">✕</span>
+        <span><b>CFO departure reported</b> <span class="muted">· Reuters · dismissed by Marcus Lee</span></span>
+        <div class="chips"><span class="badge gray">Dismissed</span></div>
+      </div>
+      <div class="ledger-detail">
+        <ul class="trail" data-trail="exec">
+          <li>Detected and graded <strong>Low</strong> by Watchtower · Aug 5 <a class="cite" onclick="return openCite('Reuters, Aug 5')"><span class="src-ico"></span>Reuters</a></li>
+          <li><strong>Dismissed</strong> by Marcus Lee · Aug 6</li>
+          <li>Reason on record: "Routine executive transition, no control or service impact. Finance contact unchanged."</li>
+          <li>Grading tuned: similar leadership-change signals will rank lower for this vendor</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ledger-item" id="led-soc2">
+      <div class="ledger-row" onclick="toggleExpand('led-soc2')">
+        <span class="ledger-when">Jul 30</span>
+        <span class="ledger-ico pos">✓</span>
+        <span><b>SOC 2 Type II renewed</b> <span class="muted">· report attached to Documents automatically</span></span>
+        <div class="chips"><span class="badge green">Positive · auto-logged</span></div>
+      </div>
+      <div class="ledger-detail">
+        <ul class="trail" data-trail="soc2">
+          <li>Detected on the vendor trust page by Watchtower · Jul 30</li>
+          <li>Report (period Jun 1, 2025 to May 31, 2026) <strong>attached to Documents</strong> automatically · Jul 30 <a class="cite internal" onclick="return openCite('Documents tab, SOC 2 Type II 2026')"><span class="src-ico"></span>Documents</a></li>
+          <li>Graded Positive: no attention needed under your quiet-handling rules</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== COVERAGE FOOTER ==================== -->
+  <div class="coverage">
+    <div class="card coverage-card">
+      <div class="coverage-head">
+        <span class="cov-title"><span class="pulse"></span>Watchtower monitoring is on</span>
+        <span class="cov-meta">Last sweep today, 8:52 AM · next sweep ~2:00 PM</span>
+        <span class="cov-right">Followed since <b>Feb 12, 2026</b>, added automatically from Zip intake</span>
+      </div>
+      <div class="src-grid">
+        <div class="src-row"><span class="dot"></span>SEC EDGAR<span class="when">22m ago</span></div>
+        <div class="src-row"><span class="dot"></span>Leak-site monitors<span class="when">22m ago</span></div>
+        <div class="src-row"><span class="dot"></span>Breach registries<span class="when">1h ago</span></div>
+        <div class="src-row"><span class="dot"></span>News and media<span class="when">41m ago</span></div>
+        <div class="src-row"><span class="dot"></span>Sanctions lists<span class="when">3h ago</span></div>
+        <div class="src-row"><span class="dot"></span>Cert transparency<span class="when">2h ago</span></div>
+        <div class="src-row"><span class="dot"></span>Domain health<span class="when">6h ago</span></div>
+        <div class="src-row"><span class="dot"></span>Vendor trust page<span class="when">1d ago</span></div>
+        <div class="src-row"><span class="dot"></span>Court records<span class="when">1d ago</span></div>
+        <div class="src-row slot"><span class="dot idle"></span>Security ratings (BitSight)<span class="when">not connected</span></div>
+      </div>
+      <div class="entity-line">
+        <span>Watching as <b>Meridian Payroll Systems Inc.</b> · CIK 0001728394 · meridianpayroll.com, meridianhcm.com</span>
+        <span>Entity match profile: <b>Strong</b> (5 anchors)</span>
+        <span class="optout"><a href="#" onclick="return openCite('Pause monitoring (exception flow, requires reason)')">Pause monitoring for this vendor</a></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="shared.js"></script>
+</body>
+</html>
