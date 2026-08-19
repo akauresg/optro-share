@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intelligence tab · Vendor response review · Meridian Payroll Systems</title>
+<link rel="stylesheet" href="luna.css">
+<style>
+  .timejump {
+    max-width:1000px; margin:0.75rem auto 0; padding:0.4375rem 0.75rem;
+    background:var(--luna-blue-50); border:1px solid var(--luna-blue-100);
+    border-radius:var(--luna-radius-sm); font-size:0.75rem; color:var(--luna-blue-700);
+    display:flex; gap:0.5rem; align-items:center;
+  }
+  .queue-head { display:flex; align-items:baseline; gap:0.625rem; margin-bottom:0.5rem; }
+  .queue-head h2 { font-size:0.9375rem; }
+
+  .signal { margin-bottom:0.75rem; overflow:hidden; }
+  .signal.sev-critical { border-left:3px solid var(--luna-red-500); }
+  .signal.sev-high { border-left:3px solid var(--luna-orange-400); }
+  .signal-head { display:flex; align-items:center; gap:0.5rem; padding:0.625rem 0.875rem; cursor:pointer; user-select:none; }
+  .signal-head:hover { background:var(--luna-gray-50); }
+  .signal-title { font-weight:600; font-size:0.875rem; }
+  .signal-src { font-size:0.75rem; color:var(--luna-gray-500); }
+  .signal-head .chips { margin-left:auto; display:flex; align-items:center; gap:0.375rem; }
+  .chev { color:var(--luna-gray-400); font-size:0.625rem; transition:transform 120ms; }
+  .signal-body { display:none; border-top:var(--luna-border); padding:0.875rem; }
+  .signal.open .signal-body { display:block; }
+  .signal.open .chev { transform:rotate(180deg); }
+
+  /* Q/A response thread */
+  .qa { border:var(--luna-border); border-radius:var(--luna-radius-sm); margin-bottom:0.5rem; overflow:hidden; }
+  .qa-q { padding:0.5rem 0.625rem; font-size:0.75rem; font-weight:600; color:var(--luna-gray-700); background:var(--luna-gray-50); display:flex; gap:0.5rem; align-items:baseline; }
+  .qa-q .qn { color:var(--luna-gray-400); font-weight:700; flex:none; }
+  .qa-a { padding:0.5rem 0.625rem 0.5625rem 1.6875rem; font-size:0.8125rem; color:var(--luna-gray-800); }
+  .qa-eval {
+    display:flex; gap:0.5rem; align-items:flex-start; padding:0.4375rem 0.625rem 0.5rem 1.6875rem;
+    border-top:1px dashed var(--luna-gray-200); font-size:0.75rem; color:var(--luna-gray-600);
+  }
+  .qa-eval .badge { flex:none; margin-top:0.0625rem; }
+
+  .read-box {
+    background:var(--luna-purple-50); border:1px solid var(--luna-purple-100);
+    border-radius:var(--luna-radius-sm); padding:0.625rem 0.75rem; font-size:0.8125rem;
+  }
+  .read-box .read-title {
+    font-size:0.6875rem; font-weight:600; letter-spacing:0.03rem; text-transform:uppercase;
+    color:var(--luna-purple-700); margin-bottom:0.25rem; display:flex; align-items:center; gap:0.375rem;
+  }
+
+  .proposal {
+    border:1px solid var(--luna-teal-200); background:#f7fbfc;
+    border-radius:var(--luna-radius-sm); padding:0.625rem 0.75rem; margin-top:0.875rem;
+  }
+  .proposal .prop-title { font-size:0.6875rem; font-weight:600; letter-spacing:0.03rem; text-transform:uppercase; color:var(--luna-teal-700); margin-bottom:0.375rem; display:flex; gap:0.375rem; align-items:center; }
+  .prop-item { display:flex; gap:0.5rem; align-items:flex-start; padding:0.1875rem 0; font-size:0.8125rem; }
+  .prop-item .pn {
+    width:16px; height:16px; border-radius:50%; flex:none; margin-top:0.125rem;
+    background:var(--luna-teal-100); color:var(--luna-teal-700); font-size:0.5625rem; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .prop-item .muted { display:block; }
+
+  .actionbar {
+    display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;
+    border-top:var(--luna-border); margin:0.875rem -0.875rem -0.875rem;
+    padding:0.625rem 0.875rem; background:var(--luna-gray-50);
+  }
+  .actionbar .spacer { flex:1; }
+  .seam-note { font-size:0.6875rem; color:var(--luna-gray-400); }
+
+  .quiet-row { display:flex; align-items:center; gap:0.5rem; padding:0.5rem 0.875rem; cursor:pointer; }
+  .quiet-row:hover { background:var(--luna-gray-50); }
+  .quiet-row + .quiet-detail, .quiet-row { border-top:var(--luna-border); }
+  .quiet-row:first-child { border-top:none; }
+  .quiet-detail { display:none; padding:0 0.875rem 0.75rem 2.375rem; }
+  .quiet-item.open .quiet-detail { display:block; }
+  .quiet-ico { width:22px; height:22px; border-radius:var(--luna-radius-full); flex:none;
+    display:flex; align-items:center; justify-content:center; font-size:0.6875rem; }
+  .quiet-ico.pos { background:var(--luna-green-100); color:var(--luna-green-700); }
+  .quiet-ico.dis { background:var(--luna-gray-100); color:var(--luna-gray-500); }
+  .quiet-ico.ai { background:var(--luna-purple-100); color:var(--luna-purple-700); }
+  .quiet-row .when { margin-left:auto; color:var(--luna-gray-400); font-size:0.6875rem; white-space:nowrap; }
+  .dimmed { opacity:0.55; }
+</style>
+</head>
+<body>
+
+<div class="app-topbar">
+  <span class="brand"><span class="brand-mark"></span>Optro</span>
+  <span class="crumb-sep">/</span><a href="#" onclick="return false;">Third-Party Risk</a>
+  <span class="crumb-sep">/</span><a href="#" onclick="return false;">Vendors</a>
+  <span class="crumb-sep">/</span><span style="color:var(--luna-gray-800);font-weight:600">Meridian Payroll Systems</span>
+  <div class="topbar-right">
+    <a class="tiny" href="intelligence.html">Back to Aug 18 state</a>
+    <span class="avatar">AK</span>
+  </div>
+</div>
+
+<div class="vendor-header">
+  <div class="vendor-header-row">
+    <span class="avatar lg">MP</span>
+    <div>
+      <div style="display:flex;align-items:center;gap:0.5rem">
+        <span class="vendor-title">Meridian Payroll Systems</span>
+        <span class="badge red">Tier 1</span>
+        <span class="badge gray">Active</span>
+      </div>
+      <div class="vendor-meta">
+        <span>Payroll processing</span><span>·</span>
+        <span>Business owner: Dana Whitfield</span><span>·</span>
+        <span>Next review: Sep 15, 2026</span>
+      </div>
+    </div>
+    <div class="vendor-header-actions">
+      <button class="btn sm">Log activity</button>
+      <button class="btn sm">Actions <span class="caret">▼</span></button>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab">Overview</button>
+    <button class="tab">Profile</button>
+    <button class="tab">Lifecycle</button>
+    <button class="tab">Documents</button>
+    <button class="tab">Assessment</button>
+    <button class="tab">Issues <span class="badge gray">0</span></button>
+    <button class="tab active">Intelligence <span class="badge red">1</span></button>
+  </div>
+</div>
+
+<div class="timejump">
+  <span class="badge blue">Prototype time jump</span>
+  <span>Same tab, three days later: it is now <b>Thu Aug 21, 2026</b> and Meridian has replied to inquiry INQ-1042. This is the response-review flow.</span>
+</div>
+
+<div class="page" style="max-width:1000px">
+
+  <!-- ==================== NEEDS ATTENTION ==================== -->
+  <div class="queue-head">
+    <h2>Needs attention</h2>
+    <span class="muted">1 signal · vendor response ready for your review</span>
+  </div>
+
+  <div class="card signal sev-critical open" id="sig-8k" data-signal-card="8k">
+    <div class="signal-head" onclick="toggleExpand('sig-8k')">
+      <span class="badge red xstrong">Critical</span>
+      <div>
+        <div class="signal-title">SEC 8-K filed: material cybersecurity incident</div>
+        <div class="signal-src">SEC EDGAR · Item 1.05 · Filed Aug 18 · Inquiry INQ-1042 answered today</div>
+      </div>
+      <div class="chips">
+        <span class="badge gray outline">1 related signal</span>
+        <span class="badge teal strong" data-status="8k">Response received · review</span>
+        <span class="chev">▼</span>
+      </div>
+    </div>
+    <div class="signal-body">
+
+      <div class="section-label">Vendor response · received today, 9:02 AM · 2 days before deadline</div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qn">Q1</span>Was any Vellamont employee data within the affected environment?</div>
+        <div class="qa-a">"Our forensic review confirms that a subset of customer employee data was present in the affected environment. For Vellamont, this includes employee names, bank account numbers, and net pay amounts for payroll runs between Mar 2024 and Jun 2026. SSNs were encrypted with keys stored separately and show no evidence of access."</div>
+        <div class="qa-eval">
+          <span class="badge orange">Partially responsive</span>
+          <span>Confirms exposure of your employees' bank account data. The SSN claim is an assertion without evidence; no encryption attestation was provided. <a class="cite internal" onclick="return openCite('Vendor response, paragraph 2')"><span class="src-ico"></span>Response · para 2</a></span>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qn">Q2</span>Is the 72-hour notification obligation under DPA clause 9.3 triggered?</div>
+        <div class="qa-a">"Yes. Our legal team has determined that notification obligations are triggered. Formal notice to affected customers, including a data inventory, will be issued by Aug 22, 2026."</div>
+        <div class="qa-eval">
+          <span class="badge green">Responsive</span>
+          <span>Commits to formal notice by Aug 22, within the clause 9.3 window measured from their confirmation. <a class="cite internal" onclick="return openCite('Contract, clause 9.3')"><span class="src-ico"></span>Contract · clause 9.3</a></span>
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q"><span class="qn">Q3</span>What containment and forensic steps are complete, and who is the IR firm?</div>
+        <div class="qa-a">"Containment was completed Aug 16. We have engaged Mandiant as our incident response firm. A summary forensic report will be made available to customers under NDA in September."</div>
+        <div class="qa-eval">
+          <span class="badge yellow">Responsive · unverified</span>
+          <span>Names the IR firm and a containment date, but attaches no artifacts. The report is offered under NDA in September.</span>
+        </div>
+      </div>
+
+      <div class="read-box">
+        <div class="read-title">✦ Watchtower's read</div>
+        Exposure of your employees' bank account data is now <b>confirmed by the vendor</b>, moving this incident from possible to confirmed impact.
+        Two commitments to track: formal notice by <b>Aug 22</b> and the forensic report in September.
+        One gap: the SSN encryption claim has no supporting evidence.
+        <div style="margin-top:0.375rem">
+          <a class="cite internal" onclick="return openCite('Vendor response, INQ-1042')"><span class="src-ico"></span>Full response · INQ-1042</a>
+          <a class="cite internal" onclick="return openCite('Questionnaire 2026, Q4.2')"><span class="src-ico"></span>Questionnaire 2026 · Q4.2</a>
+          <a class="cite internal" onclick="return openCite('Contract, clause 9.3')"><span class="src-ico"></span>Contract · clause 9.3</a>
+        </div>
+      </div>
+
+      <div class="proposal" id="proposal-box">
+        <div class="prop-title">✦ Proposed next step: escalate, keep open</div>
+        <div class="prop-item"><span class="pn">1</span><span>Open issue <b>ISS-2091: Confirmed exposure of employee bank data</b>, drafted from this evaluation.</span></div>
+        <div class="prop-item"><span class="pn">2</span><span>Notify Dana Whitfield: confirmed impact, formal notice expected Aug 22, drafted note ready.</span></div>
+        <div class="prop-item"><span class="pn">3</span><span>Keep this signal open and <b>auto-resurface if formal notice is not received by Aug 22, 5:00 PM</b>.</span></div>
+        <div class="prop-item"><span class="pn">4</span><span>Send a follow-up question requesting evidence for the SSN encryption claim <span class="muted tiny">(optional, drafted)</span></span></div>
+      </div>
+
+      <div class="section-label">Review record</div>
+      <ul class="trail" data-trail="8k">
+        <li>Detected and graded <strong>Critical</strong> by Watchtower · Aug 18, 6:58 AM</li>
+        <li><strong>Inquiry INQ-1042 approved and sent</strong> by you, covering the related leak-site signal · Aug 18, 9:14 AM</li>
+        <li><strong>Vendor responded</strong>, 3 of 3 questions answered · today, 9:02 AM</li>
+        <li><strong>Evaluation drafted</strong> by Watchtower · today, 9:07 AM · <b>awaiting your approval, nothing has been actioned</b></li>
+      </ul>
+
+      <div class="actionbar">
+        <button class="btn primary sm" onclick="approveEscalation()">Review and approve escalation</button>
+        <button class="btn sm" onclick="sendFollowUp()">Follow-up question only</button>
+        <button class="btn transparent sm" onclick="closeInstead()">Close instead</button>
+        <span class="spacer"></span>
+        <span class="seam-note">Watchtower proposed this. Nothing happens until you approve.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related leak signal, covered -->
+  <div class="card signal sev-high" id="sig-leak" data-signal-card="leak">
+    <div class="signal-head" onclick="toggleExpand('sig-leak')">
+      <span class="badge orange strong">High</span>
+      <div>
+        <div class="signal-title">Leak-site listing references meridianpayroll.com</div>
+        <div class="signal-src">Leak-site monitor · cl0p · First seen Aug 11</div>
+      </div>
+      <div class="chips">
+        <span class="badge gray outline">Related to the 8-K above</span>
+        <span class="badge teal" data-status="leak">Covered by INQ-1042</span>
+        <span class="chev">▼</span>
+      </div>
+    </div>
+    <div class="signal-body">
+      <div class="section-label">Review record</div>
+      <ul class="trail" data-trail="leak">
+        <li>Detected and graded <strong>High</strong> by Watchtower · Aug 11, 4:20 PM</li>
+        <li><strong>Watching</strong> set by Priya Shah, note: "Single-source claim, wait for corroboration" · Aug 12</li>
+        <li><strong>Auto-resurfaced</strong>: corroborating 8-K filed · Aug 18, 6:58 AM</li>
+        <li><strong>Covered by inquiry INQ-1042</strong>, sent on the related signal by you · Aug 18, 9:14 AM</li>
+        <li>Your decision on the 8-K evaluation will apply here too</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== HANDLED QUIETLY ==================== -->
+  <div class="section-label">Handled quietly · last 90 days <span class="badge gray">4</span></div>
+  <div class="card">
+    <div class="quiet-item" id="quiet-quar">
+      <div class="quiet-row" onclick="toggleExpand('quiet-quar')">
+        <span class="quiet-ico dis">?</span>
+        <span><b>Quarantined match released</b> <span class="muted">· UK court record, wrong company</span></span>
+        <span class="badge gray">Matcher updated</span>
+        <span class="when">Aug 19</span>
+      </div>
+      <div class="quiet-detail">
+        <ul class="trail">
+          <li>Candidate match found by Watchtower, confidence 41%, quarantined · Aug 14</li>
+          <li><strong>Released as "not our vendor"</strong> by Priya Shah, reason: different company, similar name · Aug 19</li>
+          <li>Matcher updated: this entity will not be re-linked to Meridian Payroll Systems</li>
+        </ul>
+      </div>
+    </div>
+    <div class="quiet-item" id="quiet-cadence">
+      <div class="quiet-row" onclick="toggleExpand('quiet-cadence')">
+        <span class="quiet-ico ai">✦</span>
+        <span><b>Next review moved earlier</b> <span class="muted">· Feb 12, 2027 to Sep 15, 2026</span></span>
+        <span class="badge purple">Proposal accepted</span>
+        <span class="when">Aug 18</span>
+      </div>
+      <div class="quiet-detail">
+        <ul class="trail">
+          <li>Proposed by Watchtower under your Tier 1 cadence rules · Aug 18, 7:02 AM</li>
+          <li><strong>Approved</strong> by you, Lifecycle schedule updated · Aug 18, 9:16 AM</li>
+        </ul>
+      </div>
+    </div>
+    <div class="quiet-item" id="quiet-exec">
+      <div class="quiet-row" onclick="toggleExpand('quiet-exec')">
+        <span class="quiet-ico dis">✕</span>
+        <span><b>CFO departure reported</b> <span class="muted">· Reuters</span></span>
+        <span class="badge gray">Dismissed</span>
+        <span class="when">Aug 6</span>
+      </div>
+      <div class="quiet-detail">
+        <ul class="trail">
+          <li>Detected and graded <strong>Low</strong> by Watchtower · Aug 5</li>
+          <li><strong>Dismissed</strong> by Marcus Lee, reason: "Routine executive transition, no control or service impact." · Aug 6</li>
+        </ul>
+      </div>
+    </div>
+    <div class="quiet-item" id="quiet-soc2">
+      <div class="quiet-row" onclick="toggleExpand('quiet-soc2')">
+        <span class="quiet-ico pos">✓</span>
+        <span><b>SOC 2 Type II renewed</b> <span class="muted">· report attached to Documents automatically</span></span>
+        <span class="badge green">Positive</span>
+        <span class="when">Jul 30</span>
+      </div>
+      <div class="quiet-detail">
+        <ul class="trail">
+          <li>Detected on the vendor trust page by Watchtower · Jul 30</li>
+          <li>Report attached to Documents automatically · Jul 30</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== COVERAGE FOOTER ==================== -->
+  <div class="coverage">
+    <div class="card coverage-card">
+      <div class="coverage-head">
+        <span class="cov-title"><span class="pulse"></span>Watchtower monitoring is on</span>
+        <span class="cov-meta">Last sweep today, 8:40 AM · next sweep ~1:00 PM</span>
+        <span class="cov-right">Followed since <b>Feb 12, 2026</b>, added automatically from Zip intake</span>
+      </div>
+      <div class="src-grid">
+        <div class="src-row"><span class="dot"></span>SEC EDGAR<span class="when">35m ago</span></div>
+        <div class="src-row"><span class="dot"></span>Leak-site monitors<span class="when">35m ago</span></div>
+        <div class="src-row"><span class="dot"></span>Breach registries<span class="when">1h ago</span></div>
+        <div class="src-row"><span class="dot"></span>News and media<span class="when">20m ago</span></div>
+        <div class="src-row"><span class="dot"></span>Sanctions lists<span class="when">2h ago</span></div>
+        <div class="src-row"><span class="dot"></span>Cert transparency<span class="when">3h ago</span></div>
+        <div class="src-row"><span class="dot"></span>Domain health<span class="when">5h ago</span></div>
+        <div class="src-row"><span class="dot"></span>Vendor trust page<span class="when">6h ago</span></div>
+        <div class="src-row"><span class="dot"></span>Court records<span class="when">1d ago</span></div>
+        <div class="src-row slot"><span class="dot idle"></span>Security ratings (BitSight)<span class="when">not connected</span></div>
+      </div>
+      <div class="entity-line">
+        <span>Watching as <b>Meridian Payroll Systems Inc.</b> · CIK 0001728394 · meridianpayroll.com, meridianhcm.com</span>
+        <span>Entity match profile: <b>Strong</b> (5 anchors)</span>
+        <span class="optout"><a href="#" onclick="return openCite('Pause monitoring (exception flow, requires reason)')">Pause monitoring for this vendor</a></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="shared.js"></script>
+<script>
+  function approveEscalation() {
+    openModal('Approve escalation', 'Everything below happens only when you approve', `
+      <div class="ai-note"><span>✦</span><span>Proposed by Watchtower from the vendor's response. Uncheck anything you do not want; edit the drafts before approving.</span></div>
+      <div class="radio-row"><input type="checkbox" checked id="esc-issue"><label for="esc-issue" style="margin:0;font-weight:400"><b>Open issue ISS-2091</b>: Confirmed exposure of employee bank data <a class="cite internal" onclick="return openCite('Issue draft (editable)')"><span class="src-ico"></span>View draft</a></label></div>
+      <div class="radio-row"><input type="checkbox" checked id="esc-notify"><label for="esc-notify" style="margin:0;font-weight:400"><b>Notify Dana Whitfield</b>: confirmed impact, notice expected Aug 22 <a class="cite internal" onclick="return openCite('Notification draft (editable)')"><span class="src-ico"></span>View draft</a></label></div>
+      <div class="radio-row"><input type="checkbox" checked id="esc-watch"><label for="esc-watch" style="margin:0;font-weight:400"><b>Keep signal open</b>, auto-resurface if formal notice is missed (Aug 22, 5:00 PM)</label></div>
+      <div class="radio-row"><input type="checkbox" checked id="esc-follow"><label for="esc-follow" style="margin:0;font-weight:400"><b>Send follow-up</b> requesting evidence for the SSN encryption claim <a class="cite internal" onclick="return openCite('Follow-up draft (editable)')"><span class="src-ico"></span>View draft</a></label></div>
+    `, `
+      <span class="foot-note">Each item creates or updates a real record, logged on this signal.</span>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn primary" onclick="finishEscalation()">Approve</button>`);
+  }
+  function finishEscalation() {
+    const issue = document.getElementById('esc-issue').checked;
+    const notify = document.getElementById('esc-notify').checked;
+    const follow = document.getElementById('esc-follow').checked;
+    closeModal();
+    setStatus('8k', 'orange strong', 'Escalated · watching for notice (Aug 22)');
+    setStatus('leak', 'orange', 'Escalated with related signal');
+    addTrail('8k', `<strong>Escalation approved</strong> by you · Aug 21, 2026, 9:40 AM`);
+    if (issue) addTrail('8k', `<strong>Issue ISS-2091 opened</strong>: Confirmed exposure of employee bank data · Aug 21, 2026`);
+    if (notify) addTrail('8k', `<strong>Dana Whitfield notified</strong> with the drafted update · Aug 21, 2026`);
+    if (follow) addTrail('8k', `<strong>Follow-up sent</strong>: evidence requested for the SSN encryption claim · Aug 21, 2026`);
+    addTrail('8k', `Auto-resurface armed: formal notice due <strong>Aug 22, 5:00 PM</strong>`);
+    addTrail('leak', `<strong>Escalation on the related 8-K applies here</strong> · Aug 21, 2026`);
+    const box = document.getElementById('proposal-box');
+    if (box) box.style.display = 'none';
+    toast('Escalation approved. Issue, notification, and follow-up created; resurface armed for Aug 22.');
+  }
+  function sendFollowUp() {
+    openModal('Send follow-up question', 'To: security@meridianpayroll.com · thread INQ-1042', `
+      <div class="ai-note"><span>✦</span><span>Drafted from the gap Watchtower found in the response. Edit before sending.</span></div>
+      <div class="field"><label>Question</label>
+        <textarea rows="4">Your response states that SSNs were encrypted with separately stored keys and show no evidence of access. Please provide supporting evidence: the applicable encryption standard, key management attestation, and the forensic basis for the no-access conclusion.</textarea></div>`, `
+      <span class="foot-note">Appends to inquiry INQ-1042. Nothing is sent until you approve.</span>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn primary" onclick="finishFollowUp()">Approve and send</button>`);
+  }
+  function finishFollowUp() {
+    closeModal();
+    setStatus('8k', 'teal', 'Follow-up sent · awaiting vendor');
+    addTrail('8k', `<strong>Follow-up sent</strong> on thread INQ-1042: evidence requested for the SSN encryption claim · Aug 21, 2026, 9:40 AM`);
+    toast('Follow-up sent on INQ-1042. Watchtower will evaluate the reply when it arrives.');
+  }
+  function closeInstead() {
+    openModal('Close this signal', 'Requires a documented rationale; overrides the proposed escalation', `
+      <div class="field"><label>Rationale <span class="hint">(required, kept on the review record with the overridden proposal)</span></label>
+        <textarea rows="4" id="close-reason" placeholder="Why is no further action needed despite the confirmed exposure?"></textarea></div>`, `
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn primary" id="close-btn" onclick="finishClose()">Close signal</button>`);
+    requireText('close-reason', 'close-btn');
+  }
+  function finishClose() {
+    closeModal();
+    setStatus('8k', 'gray', 'Closed · rationale on record');
+    setStatus('leak', 'gray', 'Closed with related signal');
+    addTrail('8k', `<strong>Closed against Watchtower's proposal</strong> by you, rationale on record · Aug 21, 2026, 9:40 AM`);
+    document.querySelectorAll('[data-signal-card="8k"], [data-signal-card="leak"]').forEach((el) => el.classList.add('dimmed'));
+    const box = document.getElementById('proposal-box');
+    if (box) box.style.display = 'none';
+    toast('Signal closed. Your rationale and the overridden proposal stay on the record.');
+  }
+</script>
+</body>
+</html>
